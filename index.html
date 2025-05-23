@@ -1,1588 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-
-<script src="bootstrap.js"></script>
-<script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script> 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"> -->
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // 查找所有 cite 元素
-        var cites = document.querySelectorAll("cite");
-        var footnoteMap = {}; // 用于跟踪脚注的映射
-
-        cites.forEach(function(cite, index) {
-            var citeContent = cite.innerHTML.trim();
-            var footnoteId;
-            if (footnoteMap[citeContent]) {
-                footnoteId = footnoteMap[citeContent];
-            }else{
-                // 创建新的脚注ID
-                footnoteId = (Object.keys(footnoteMap).length + 1);
-                footnoteMap[citeContent] = footnoteId;
-    
-                // 创建新的脚注内容
-                var footnote = document.createElement("li");
-                footnote.innerHTML = "<b>[" + (Object.keys(footnoteMap).length) + "]</b> " + citeContent;
-                footnote.id = footnoteId;
-                document.getElementById("footnotes-list").appendChild(footnote);
-            }
-
-            // 在原位置添加引用编号
-            var sup = document.createElement("sup");
-            var a = document.createElement("a");
-            a.href = "#" + footnoteId;
-            a.innerHTML = "[" + footnoteId + "]";
-            sup.appendChild(a);
-            cite.parentNode.insertBefore(sup, cite.nextSibling);
-
-            // 隐藏原始的 cite 标签
-            cite.style.display = "none";
-        });
-    });
-</script>
-
-<!-- <script>
-    function onScroll() {
-        var sections = document.querySelectorAll("section");
-        var menuLinks = document.querySelectorAll("#table-of-contents");
-
-        var currentSectionId = "";
-        sections.forEach((section) => {
-            var rect = section.getBoundingClientRect();
-            // 检查section的顶部或底部是否在视窗内
-            if (rect.top <= 50 && rect.bottom >= 50) {
-                currentSectionId = section.id;
-            }
-        });
-
-        // 更新链接的活跃状态
-        menuLinks.forEach((link) => {
-            if (link.getAttribute("href") === "#" + currentSectionId) {
-                link.classList.add("active-link");
-            } else {
-                link.classList.remove("active-link");
-            }
-        });
-    }
-
-    // 监听滚动事件
-    window.addEventListener("scroll", onScroll);
-</script> -->
-
-<script>
-    function detectDeviceType() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (/mobile/i.test(userAgent)) {
-            return 'Mobile';
-        } else {
-            return 'Desktop';
-        }
-    }
-
-    console.log(detectDeviceType());
-</script>
-<!-- TBD -->
-
-<style type="text/css">
-body {
-    font-family: "Titillium Web", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
-    font-size: 17px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media screen and (min-width: 980px){
-    body {
-        width: 980px;
-    }
-}
-
-h1 {
-    font-weight:300;
-    line-height: 1.15em;
-}
-
-h2 {
-    font-size: 1.75em;
-}
-a:link,a:visited {
-    color: #5364cc;
-    text-decoration: none;
-}
-a:hover {
-    color: #208799;
-}
-h1 {
-    text-align: center;
-}
-h2,h3 {
-    text-align: left;
-}
-
-h1 {
-    font-size: 40px;
-    font-weight: 500;
-}
-h2 {
-    font-weight: 400;
-    margin: 16px 0px 4px 0px;
-}
-h3 {
-    font-weight: 600;
-    margin: 16px 0px 4px 0px;
-}
-
-.paper-title {
-    padding: 1px 0px 1px 0px;
-}
-section {
-    margin: 32px 0px 32px 0px;
-    text-align: justify;
-    clear: both;
-}
-.col-5 {
-     width: 20%;
-     float: left;
-}
-.col-4 {
-     width: 25%;
-     float: left;
-}
-.col-3 {
-     width: 33%;
-     float: left;
-}
-.col-2 {
-     width: 50%;
-     float: left;
-}
-.col-1 {
-     width: 100%;
-     float: left;
-}
-
-.author-row, .affil-row {
-    font-size: 26px;
-}
-
-.author-row-new { 
-    text-align: center; 
-}
-
-.author-row-new a {
-    display: inline-block;
-    font-size: 20px;
-    padding: 4px;
-}
-
-.author-row-new sup {
-    color: #313436;
-    font-size: 12px;
-}
-
-.affiliations-new {
-    font-size: 18px;
-    text-align: center;
-    width: 80%;
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
-
-.row {
-    margin: 16px 0px 16px 0px;
-}
-.authors {
-    font-size: 26px;
-}
-.affiliatons {
-    font-size: 18px;
-}
-.affil-row {
-    margin-top: 18px;
-}
-.teaser {
-    max-width: 100%;
-}
-.text-center {
-    text-align: center;  
-}
-.screenshot {
-    width: 256px;
-    border: 1px solid #ddd;
-}
-.screenshot-el {
-    margin-bottom: 16px;
-}
-hr {
-    height: 1px;
-    border: 0; 
-    border-top: 1px solid #ddd;
-    margin: 0;
-}
-.material-icons {
-    vertical-align: -6px;
-}
-.material-symbols-outlined{
-    vertical-align: -6px;
-}
-p {
-    line-height: 1.25em;
-}
-.caption {
-    font-size: 16px;
-    color: #666;
-    margin-top: 4px;
-    margin-bottom: 10px;
-}
-
-
-video {
-    display: block;
-    margin: auto;
-}
-
-details { background-color: #f0f0f0; } /* 浅灰色背景 */
-summary { background-color: #FFFFFF; }
-
-figure {
-    display: block;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-#bibtex pre {
-    font-size: 14px;
-    background-color: #eee;
-    padding: 16px;
-}
-.blue {
-    color: #2c82c9;
-    font-weight: bold;
-}
-.orange {
-    color: #d35400;
-    font-weight: bold;
-}
-.flex-row {
-    display: flex;
-    flex-flow: row wrap;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.paper-btn-coming-soon {
-    position: relative; 
-    top: 0;
-    left: 0;
-}
-
-.coming-soon {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-}
-
-
-.paper-btn {
-  position: relative;
-  text-align: center;
-
-  display: inline-block;
-  margin: 8px;
-  padding: 8px 8px;
-
-  border-width: 0;
-  outline: none;
-  border-radius: 2px;
-  
-  background-color: #5364cc;
-  color: white !important;
-  font-size: 20px;
-  width: 100px;
-  font-weight: 600;
-}
-.paper-btn-parent {
-    display: flex;
-    justify-content: center;
-    margin: 16px 0px;
-}
-
-.paper-btn:hover {
-    opacity: 0.85;
-}
-
-.container {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-.venue {
-    font-size: 23px;
-}
-
-.topnav {
-    background-color: #EEEEEE;
-    overflow: hidden;
-}
-
-.topnav div {
-    max-width: 1070px;
-    margin: 0 auto;
-}
-
-.topnav a {
-    display: inline-block;
-    color: black;
-    text-align: center;
-    vertical-align: middle;
-    padding: 16px 16px;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.topnav img {
-    padding: 2px 0px;
-    width: 100%;
-    margin: 0.2em 0px 0.3em 0px;
-    vertical-align: middle;
-}
-
-pre {
-    font-size: 0.9em;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    border-radius: 3px;
-    background-color: rgb(235, 235, 235);
-    overflow-x: auto;
-}
-.download-thumb {
-    display: flex;
-}
-
-@media only screen and (max-width: 620px) {
-    .download-thumb {
-        display: none;
-    }
-}
-
-.paper-stuff {
-    width: 50%;
-    font-size: 20px;
-}
-
-@media only screen and (max-width: 620px) {
-    .paper-stuff {
-        width: 100%;
-    }
-}
-* {
-  box-sizing: border-box;
-}
-
-.column {
-  text-align: center;
-  float: left;
-  width: 16.666%;
-  padding: 5px;
-}
-.column3 {
-  text-align: center;
-  float: left;
-  width: 33.333%;
-  padding: 5px;
-}
-.column4 {
-  text-align: center;
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-.column5 {
-  text-align: center;
-  float: left;
-  width: 20%;
-  padding: 5px;
-}
-.border-right {
-    border-right: 1px solid black;
-}
-.border-bottom{
-    border-bottom: 1px solid black;
-}
-
-
-
-/* Clearfix (clear floats) */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-.figure-img {
-  margin-bottom: 0.5rem;
-  line-height: 1;
-}
-
-.pdf-object {
-    border: none; /* 移除边框 */
-}
-
-
-.center-content {
-    text-align: center; /* 确保内容居中 */
-}
-
-.center-content img {
-    margin: 0 auto; /* 水平居中 */
-    display: block; /* 使 img 行为像块级元素 */
-}
-
-.rounded-circle {
-  border-radius: 50% !important;
-}
-
-.red-bold-italic {
-    color: red;        /* 设置文字颜色为红色 */
-    font-weight: bold; /* 设置文字为加粗 */
-    font-style: italic;/* 设置文字为斜体 */
-}
-
-#teaser-image {
-    text-align: center; /* 确保内容居中 */
-}
-
-#teaser-image figure {
-    display: inline-block; /* 使 figure 行为像内联元素，以便居中 */
-    margin: 0 auto; /* 水平居中 */
-}
-
-.image-container {
-    display: flex;
-    flex-direction: row; /* 设置为行布局，使图像水平排列 */
-    justify-content: space-between; /* 在容器中水平分散排列图像 */
-    align-items: center; /* 在容器中垂直居中对齐图像 */
-}
-
-.image-container br {
-    margin-top: 20px; /* 调整间距的大小，根据需要进行调整 */
-}
-
-#table-of-contents {
-    position: fixed; /* 固定位置 */
-    left: 20px;     /* 距离窗口右边缘20px */
-    top: 50px;      /* 距离窗口顶部100px */
-    width: 200px;    /* 目录的宽度 */
-    background-color: white; /* 背景色 */
-    padding: 10px;   /* 内边距 */
-    border: 1px solid #ddd; /* 边框样式 */
-    box-shadow: 0px 0px 10px #ddd; /* 阴影效果 */
-    z-index: 1000;   /* 确保目录在最顶层 */
-}
-
-#table-of-contents h2 {
-    margin-top: 0; /* 移除标题的顶部外边距 */
-}
-
-#table-of-contents ul {
-    list-style-type: none; /* 去除列表符号 */
-    padding: 0; /* 去除内边距 */
-}
-
-#table-of-contents li {
-    margin-bottom: 10px; /* 列表项之间的间距 */
-}
-
-#table-of-contents a {
-    text-decoration: none; /* 移除链接下划线 */
-    color: #000; /* 设置链接颜色 */
-}
-
-#table-of-contents a:hover {
-    text-decoration: underline; /* 鼠标悬停时添加下划线 */
-}
-
-.active-link {
-    color: blue; /* 设置活跃链接的颜色为蓝色 */
-}
-
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 500px) {
-  .column {
-    width: 100%;
-  }
-}
-@media screen and (max-width: 500px) {
-  .column3 {
-    width: 100%;
-  }
-}
-
-</style>
-<link rel="stylesheet" href="bootstrap-grid.css">
-
-<script type="text/javascript" src="../js/hidebib.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600,400italic,600italic,300,300italic' rel='stylesheet' type='text/css'>
-    <head>
-        <!-- <title> Achieving Efficient Alignment through Learned Correction</title> -->
-        <title>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:description" content="A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-        <meta name="twitter:title" content="A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs">
-        <meta name="twitter:description" content="">
-        <meta name="twitter:image" content="">
-    </head>
-
- <body>
-
-
-<div class="container">
-    <div class="paper-title">
-    <h1> 
-        <!-- <i>Aligner</i> :
-        Achieving Efficient Alignment through <br>
-        Weak-to-Strong Correction -->
-        <!-- Achieving Efficient Alignment through Learned Correction -->
-        <style>
-            .paper-title h1 {
-                font-family: 'Times New Roman', Times, serif;
-                font-weight: bold; /* Make the text bold */
-                font-size: 50px; /* Set the font size */
-                margin-bottom: 10px; /* Reduce the bottom margin */
-            }
-        </style>
-        <div class="paper-title">
-            <h1>AAAAAAAAAAAAAAAAAAAAAAAAA Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</h1>
-        </div>
-        <!-- <figure class="center-content">
-            <img src="materials/logo2.png" style="width: 100%;">
-        </figure> -->
-    </h1>
-    </div>
-
-    <div id="authors">
-        <center>
-            <div class="author-row-new">
-                <a href="https://jijiaming.com">Jiaming Ji<sup><strong>*</strong></sup></a>,
-                <a href="https://cby-pku.github.io">Boyuan Chen<strong>*</strong></a>,
-                <a href="https://htlou.github.io">Hantao Lou</a>,
-                <a href="https://scholar.google.com/citations?user=JQx-_5gAAAAJ">Donghai Hong</a>,
-                <a href="https://github.com/muchvo">Borong Zhang</a>,
-                <a href="https://github.com/XuehaiPan">Xuehai Pan</a>
-                <a href="https://scholar.google.com/citations?user=eRmX5AsAAAAJ&hl=zh-CN">Juntao Dai</a>
-                <a href="https://tianyiqiu.net">Tianyi Qiu</a>
-                <a href="https://www.yangyaodong.com">Yaodong Yang</a>
-            </div>
-        </center>
-        <center>
-        <div class="affiliations">
-            <span>Institute for AI, Peking University</span><br>
-        </div>
-
-        <div class="affil-row">
-            <div class="venue text-center"><b>NeurIPS 2024 <FONT COLOR="RED">Oral Presentation</FONT></b></div>
-        </div>
-
-        </center>
-<div style="height: 20px;"></div> <!-- 空行 -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    .button-container {
-      display: flex;
-      flex-wrap: wrap; /* 自动换行 */
-      gap: 10px; /* 按钮之间的间距 */
-      justify-content: center; /* 居中对齐 */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Cultural Consensus in LLMs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Inter & Lexend -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.svg" type="image/svg">
+    <script src="https://kit.fontawesome.com/a0c5198962.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #FBBC05;
+            --background-light: #f8f9fa;
+            --text-color: #202124;
+            --light-blue: #dae8fc;
+            --light-green: #d5e8d4;
+            --light-purple: #e1d5e7;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 4rem;
+            --transition: all 0.3s ease;
+            --sidebar-width: 200px;
+            --sidebar-width-collapsed: 44px;
 
-    .button {
-      display: flex;
-      flex-direction: column; /* 图标和文字上下排列 */
-      align-items: center; /* 水平居中 */
-      justify-content: center; /* 垂直居中 */
-      width: 100px; /* 固定宽度 */
-      height: 60px; /* 固定高度 */
-      text-decoration: none; /* 去掉下划线 */
-      background-color: #E8F9FF; /* 按钮背景颜色 */
-      color: #FBFBFB; /* 文本颜色 */
-      border-radius: 8px; /* 圆角 */
-      font-size: 16px; /* 文字大小 */
-      font-family: Arial, sans-serif; /* 字体 */
-      transition: transform 0.2s ease, background-color 0.2s ease; /* 动画效果 */
-    }
+            --font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+                "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+                "Segoe UI Symbol", "Noto Color Emoji";
+            --font-family-mono: "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace",
+                "Noto Mono", "Oxygen Mono", "Liberation Mono", monospace,
+                "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-size: 17px;
+            --line-height: 1.5;
+            --font-weight: 400;
+        }
 
-    .button:hover {
-      background-color: #4F75FF; /* 悬停背景颜色 */
-	color: #FBFBFB ;
-      transform: scale(1.05); /* 悬停放大效果 */
-    }
+        html {
+            font-size: var(--font-size);
+            font-family: var(--font-family);
+            line-height: var(--line-height);
+            font-weight: var(--font-weight);
+        }
 
-    .material-icons {
-      font-size: 24px; /* 图标大小 */
-      margin-bottom: 5px; /* 图标和文字之间的间距 */
-    }
-  </style>
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            line-height: var(--line-height);
+            font-weight: var(--font-weight);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background: var(--background-light);
+        }
+
+        code,
+        pre,
+        kbd,
+        samp {
+            font-family: var(--font-family-mono);
+        }
+
+        /* 左侧目录栏 */
+        .sidebar-toc {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(to bottom, #f8f9fa 90%, #e9e9f7 100%);
+            border-right: none;
+            z-index: 900;
+            padding: var(--spacing-lg) var(--spacing-xs) var(--spacing-lg) var(--spacing-md);
+            box-shadow: none;
+            transition: width 0.3s, padding 0.3s;
+            overflow-y: auto;
+            opacity: 0.98;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sidebar-toc.collapsed {
+            width: var(--sidebar-width-collapsed);
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+            align-items: center;
+        }
+
+        .sidebar-toc .toc-toggle-btn {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-bottom: 1.2rem;
+            margin-left: 0;
+            margin-right: 0;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 6px rgba(66, 133, 244, 0.07);
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+
+        .sidebar-toc .toc-toggle-btn:hover {
+            background: var(--light-blue);
+        }
+
+        .sidebar-toc ul {
+            list-style: none;
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 2;
+            padding-left: 0;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+
+        .sidebar-toc.collapsed ul {
+            display: none;
+        }
+
+        .sidebar-toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-toc a {
+            color: #555;
+            text-decoration: none;
+            padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+            border-radius: 4px;
+            display: block;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar-toc a.active,
+        .sidebar-toc a:hover {
+            background: var(--light-blue);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 1000px) {
+            .sidebar-toc {
+                width: 150px;
+                padding-left: var(--spacing-xs);
+            }
+
+            .sidebar-toc.collapsed {
+                width: var(--sidebar-width-collapsed);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar-toc {
+                display: none;
+            }
+        }
+
+        /* 主内容左边留出目录宽度 */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: margin 0.3s;
+        }
+
+        .sidebar-toc.collapsed~.main-content {
+            margin-left: var(--sidebar-width-collapsed);
+        }
+
+        @media (max-width: 1000px) {
+            .main-content {
+                margin-left: 150px;
+            }
+
+            .sidebar-toc.collapsed~.main-content {
+                margin-left: var(--sidebar-width-collapsed);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Footer 跟随目录栏收起/展开同步左边距 */
+        .footer-main {
+            margin-left: var(--sidebar-width);
+            transition: margin 0.3s;
+            background: var(--background-light);
+            color: var(--text-color);
+        }
+
+        .sidebar-toc.collapsed~.main-content+.footer-main,
+        .sidebar-toc.collapsed~.footer-main {
+            margin-left: var(--sidebar-width-collapsed);
+        }
+
+        @media (max-width: 1000px) {
+            .footer-main {
+                margin-left: 150px;
+            }
+
+            .sidebar-toc.collapsed~.main-content+.footer-main,
+            .sidebar-toc.collapsed~.footer-main {
+                margin-left: var(--sidebar-width-collapsed);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .footer-main {
+                margin-left: 0;
+            }
+        }
+
+        /* Footer 内容块样式 */
+        .footer-content {
+            display: flex;
+            gap: var(--spacing-lg);
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: var(--background-light);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg) var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-color);
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 220px;
+            margin-bottom: var(--spacing-lg);
+            background: var(--background-light);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            box-shadow: 0 2px 8px rgba(66, 133, 244, 0.04);
+        }
+
+        .footer-col h3 {
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .footer-col a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer-col a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-col pre {
+            background: #f1f3f4;
+            color: #222;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            font-size: 0.95em;
+            overflow-x: auto;
+            font-family: var(--font-family-mono);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: var(--spacing-md);
+            color: #888;
+            font-size: 0.95em;
+            background: var(--background-light);
+            border-radius: var(--border-radius);
+            padding: 0.5em 0;
+        }
+
+        /* 其余样式同原文... */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(to bottom right, var(--light-blue), var(--light-purple));
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .author {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .affiliation {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 0.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .button-container .button {
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 0.5em 1.1em;
+            font-weight: 500;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(66, 133, 244, 0.07);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            margin-bottom: 0.5em;
+        }
+
+        .button-container .button:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.12);
+            text-decoration: none;
+        }
+
+        .button-container .material-icons {
+            font-size: 1.2em;
+            vertical-align: middle;
+        }
+
+        .section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+        }
+
+        .section h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .bg-light {
+            background-color: var(--background-light);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .two-col {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .figure {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .figure img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .caption {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .full-width img {
+            width: 100%;
+        }
+
+        .contributions {
+            margin: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .contribution-items {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .contribution-item {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .contribution-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .contribution-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-md);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .contribution-item:nth-child(2) .contribution-icon {
+            background-color: var(--light-green);
+            color: var(--secondary-color);
+        }
+
+        .contribution-item:nth-child(3) .contribution-icon {
+            background-color: var(--light-purple);
+            color: #9c27b0;
+        }
+
+        .utility-components {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0 var(--spacing-xl);
+        }
+
+        .utility-component {
+            flex: 1;
+            background-color: white;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .utility-component:nth-child(1) {
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .utility-component:nth-child(2) {
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .utility-component:nth-child(3) {
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .process-steps {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .process-step {
+            flex: 1;
+            position: relative;
+            padding: var(--spacing-lg);
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .evaluation-metrics {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .evaluation-metric {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: var(--card-shadow);
+        }
+
+        .setup-items {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .setup-item {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: var(--card-shadow);
+        }
+
+        .results-table {
+            margin: var(--spacing-xl) 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .results-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            font-size: 1rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: var(--spacing-sm);
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .results-table th {
+            background: var(--background-light);
+            font-weight: 700;
+        }
+
+        .results-table .highlight {
+            background: var(--light-blue);
+            font-weight: 700;
+        }
+
+        .case-study {
+            margin: var(--spacing-xl) 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .case-method {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-lg);
+        }
+
+        .implications {
+            margin: var(--spacing-xl) 0 0 0;
+        }
+
+        .implication-items {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .implication-item {
+            flex: 1;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .implication-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .implication-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-md);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .implication-item:nth-child(2) .implication-icon {
+            background-color: var(--light-green);
+            color: var(--secondary-color);
+        }
+
+        .implication-item:nth-child(3) .implication-icon {
+            background-color: var(--light-purple);
+            color: #9c27b0;
+        }
+
+        @media (max-width: 1000px) {
+
+            .two-col,
+            .contribution-items,
+            .utility-components,
+            .process-steps,
+            .evaluation-metrics,
+            .setup-items,
+            .implication-items,
+            .footer-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .hero {
+                padding: 6rem 0 2rem;
+            }
+
+            .section {
+                padding: var(--spacing-lg) 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+        }
+
+        @media (max-width: 700px) {
+            pre {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        .xm-iconfont {
+            font-family: "xm-iconfont" !important;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="button-container">
-    <a class="button" href="assets/Aligner.pdf" target="_blank">
-      <span class="material-icons">description</span>
-      paper
-    </a>
-    <a class="button" href="https://github.com/PKU-Alignment/aligner" target="_blank">
-      <span class="material-icons">code</span>
-      github
-    </a>
-    <a class="button" href="https://huggingface.co/datasets/aligner/aligner-20K" target="_blank">
-      <span class="material-icons">folder</span>
-      data
-    </a>
-    <a class="button" href="https://huggingface.co/datasets/aligner/alignertails" target="_blank">
-      <span class="material-icons">folder</span>
-      <i>AlignerTails</i>
-    </a>
-    <a class="button" href="https://huggingface.co/aligner/aligner-7b-v1.0" target="_blank">
-      <span class="material-icons">download</span>
-      model
-    </a>
-    <a class="button" href="#qa">
-      <span class="material-icons">quiz</span>
-      FAQ
-    </a>
-  </div>
-
-
-    
-    <!-- <section id="teaser-image">
-        <center>
-            <figure>
-                <video class="centered" width="80%" autoplay loop muted playsinline class="video-background " >
-                    <source src="assets/LION_video_v10.mp4#t=0.001" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </figure>
-
-        </center>
-    </section>
-     -->
-    <div id="table-of-contents">
-        <h2>Contents</h2>
+    <!-- 左侧目录栏 -->
+    <nav class="sidebar-toc" aria-label="Table of Contents" id="sidebar-toc">
+        <button class="toc-toggle-btn" id="toc-toggle-btn" title="Collapse/Expand Menu">
+            <span class="material-icons" id="toc-toggle-icon">chevron_left</span>
+        </button>
         <ul>
             <li><a href="#abstract">Abstract</a></li>
-            <li><a href="#teaser-image">Paradigm</a></li>
-            <li><a href="#method">Structure & Methodology</a></li>
-            <li><a href="#interp">Interpretability</a></li>
-            <li><a href="#application">Applications</a></li>
-            <li><a href="#results">Results Overview</a></li>
-            <li><a href="#detail">Detailed Results</a></li>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#methods">Methods</a></li>
+            <li><a href="#framework">Framework</a></li>
+            <li><a href="#experiments">Experiments</a></li>
+            <li><a href="#case-study">Case Study</a></li>
+            <li><a href="#discussion">Discussion</a></li>
             <li><a href="#qa">FAQ</a></li>
-            <!-- 其他部分的链接 -->
         </ul>
-    </div>
-    <br>
-    <section id="abstract"/>
-    <hr>
-    <h2>Abstract</h2>
-    <div class="flex-row">
-        <p>
-            With the rapid development of large language models (LLMs) and ever-evolving practical requirements, finding an efficient and effective alignment method has never been more critical. However, the tension between the complexity of current alignment methods and the need for rapid iteration in deployment scenarios necessitates the development of a model-agnostic alignment approach that can operate under these constraints. In this paper, we introduce <i>Aligner</i>, a novel and simple alignment paradigm that learns the correctional residuals between preferred and dispreferred answers using a small model. Designed as a model-agnostic, plug-and-play module, <i>Aligner</i> can be directly applied to various open-source and API-based models with only one-off training, making it suitable for rapid iteration. Notably, <i>Aligner</i> can be applied to any powerful, large-scale upstream models. Moreover, it can even iteratively bootstrap the upstream models using corrected responses as synthetic human preference data, breaking through the model's performance ceiling. Our experiments demonstrate performance improvements by deploying the same <i>Aligner</i> model across 11 different LLMs, evaluated on the 3H dimensions (helpfulness, harmlessness, and honesty). Specifically, <i>Aligner</i>-7B has achieved an average improvement of \(68.9\%\) in helpfulness and \(22.8\%\) in harmlessness across the tested LLMs while also effectively reducing hallucination. In the Alpaca-Eval leaderboard, stacking <i>Aligner</i>-2B on GPT-4 Turbo improved its LC Win Rate from \(55.0\%\) to \(58.3\%\), surpassing GPT-4 Omni's \(57.5\%\) Win Rate (community report).
-        </p>
-    </div>
-    </section>
-    <hr>
-    <section id="teaser-image">
-        <h2>Paradigm</h2>
-        <figure class="mx-auto" style="display: flex; justify-content: center; align-items: center;">
-            <img src="figures/aligner_figure1.jpg" style="width: 550px; margin-right: 50px;">
-            <center><figcaption style="text-align: left;">
-                <strong>Architecture of the <i>Aligner</i> module and illustration of its behavior in semantic space.</strong>
-                <br>
-                The <i>Aligner</i>, a plug-and-play model <span class="red-bold-italic" >(without RLHF)</span>, stacks upon an upstream LLM (aligned or unaligned). It redistributes initial answers from the upstream model into more helpful and harmless answers, thus aligning the composed LLM responses with human intentions. It is challenging to learn direct mappings from queries to aligned answers. Nonetheless, correcting answers based on the upstream model's output is a more tractable learning task.
-            </figcaption></center>
-        </figure>
-        <br>
-        <hr>
-        <br>
-        <figure class="mx-auto" style="display: flex; justify-content: center; align-items: center;">
-            <img src="figures/fast-aligned-clipped.gif" style="width: 550px; margin-right: 50px;">
-            <center><figcaption style="text-align: left;">
-                <strong>Analogy of the <i>Aligner</i> as a residual learning enhancer for LLMs in both architecture and capability aspects.</strong>
-                <br>
-                This schematic showcases the <i>Aligner</i> acting similarly to a residual block in neural networks.
-                It takes an initial output \( y_o \) from the upstream LLM, then the <i>Aligner</i> applies its autoregressive capabilities to generate a corrected version \( y_c \).
-                Just as a residual block uses a shortcut to add modifications without changing the base structure, the <i>Aligner</i> employs a ''copy and correct'' method, overlaying improvements onto the original answer without altering its fundamental structure.
-                This parallel highlights the <i>Aligner</i>'s dual role in preserving the initial response while enhancing it to better align with desired outcomes.
-            </figcaption></center>
-        </figure>
+    </nav>
 
-        <!-- <center> -->
-<!--            <center><p><b>A unified framework for composing pre-trained models.</b></p></center>-->
+    <div class="main-content">
+        <header class="hero">
+            <div class="container">
+                <h1>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</h1>
+                <p class="author">Anonymous Authors</p>
+                <p class="affiliation">Anonymous Affiliation</p>
+                <div class="button-container">
+                    <a class="button" href="assets/Aligner.pdf" target="_blank">
+                        <span class="material-icons">description</span>
+                        paper
+                    </a>
+                    <a class="button" href="https://github.com/PKU-Alignment/aligner" target="_blank">
+                        <span class="material-icons">code</span>
+                        code
+                    </a>
+                    <a class="button" href="https://huggingface.co/datasets/aligner/aligner-20K" target="_blank">
+                        <span class="material-icons">folder</span>
+                        data
+                    </a>
+                    <!-- <a class="button" href="https://huggingface.co/aligner/aligner-7b-v1.0" target="_blank">
+                        <span class="material-icons">download</span>
+                        model
+                    </a> -->
+                    <a class="button" href="#qa">
+                        <span class="material-icons">quiz</span>
+                        FAQ
+                    </a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <!-- Abstract -->
+            <section id="abstract" class="section fade-in">
+                <div class="container">
+                    <h2>Abstract</h2>
+                    <div class="card">
+                        <p>The increasing prevalence of large language models (LLMs) is influencing global value
+                            systems. However, these models frequently exhibit a pronounced WEIRD (Western, Educated,
+                            Industrialized, Rich, Democratic) cultural bias due to lack of attention to minority values.
+                            This monocultural perspective may reinforce dominant values and marginalize diverse cultural
+                            viewpoints, posing challenges for the development of equitable and inclusive AI systems.</p>
+                        <p>In this work, we introduce a systematic framework designed to boost fair and robust
+                            cross-cultural consensus among LLMs. We model consensus as a Nash Equilibrium and employ a
+                            game-theoretic negotiation method based on Policy-Space Response Oracles (PSRO) to simulate
+                            an organized cross-cultural negotiation process. To evaluate this approach, we construct
+                            regional cultural agents using data transformed from the World Values Survey (WVS).</p>
+                        <p>Beyond the conventional model-level evaluation method, we further propose two quantitative
+                            metrics, Perplexity-based Acceptence and Values Self-Consistency, to assess consensus
+                            outcomes. Experimental results indicate that our approach generates consensus of higher
+                            quality while ensuring more balanced compromise compared to baselines. Overall, it mitigates
+                            WEIRD bias by guiding agents toward convergence through fair and gradual negotiation steps.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <!-- Introduction -->
+            <section id="introduction" class="section bg-light fade-in">
+                <div class="container">
+                    <h2>Introduction</h2>
+                    <p>The widespread adoption of large language models (LLMs) is reshaping global social values.
+                        However, these models often exhibit a pronounced WEIRD bias, favoring Western, Educated,
+                        Industrialized, Rich and Democratic perspectives. As LLMs become increasingly embedded in
+                        policy-making and public governance, this monocultural orientation risks the domination of
+                        prevailing social values and the <em>lock-in</em> of controversial moral beliefs across broader
+                        contexts.</p>
+                    <p>Enabling equitable dialogue and effective negotiation among diverse cultures within AI systems
+                        has therefore become a growing concern in global AI governance. The establishment of cultural
+                        consensus forms a basis for resolving cross-cultural conflicts and supporting international
+                        cooperation. Given the complexity of multicultural scenarios, there is an urgent need to develop
+                        automated <em>cultural consensus solvers</em> to facilitate consensus-building among diverse
+                        cultural perspectives.</p>
+                    <div class="contributions">
+                        <h3>Our main contribution is the game-theoretic framework consisting of three parts:</h3>
+                        <div class="contribution-items">
+                            <div class="contribution-item">
+                                <div class="contribution-icon"><i class="fas fa-comments"></i></div>
+                                <h4>Cross-Cultural Negotiation</h4>
+                                <p>We define cultural consensus from a game-theoretic perspective and propose a
+                                    PSRO-based negotiation method to facilitate fair and robust agreement.</p>
+                            </div>
+                            <div class="contribution-item">
+                                <div class="contribution-icon"><i class="fas fa-users"></i></div>
+                                <h4>Regional Cultural Agents</h4>
+                                <p>We systematically construct and evaluate eight culturally-aligned agents based on WVS
+                                    and Hofstede's Culture Dimensions Theory.</p>
+                            </div>
+                            <div class="contribution-item">
+                                <div class="contribution-icon"><i class="fas fa-chart-bar"></i></div>
+                                <h4>Consensus Evaluation Toolkit</h4>
+                                <p>We introduce two quantitative metrics for consensus assessment: Perplexity-based
+                                    Acceptence and Values Self-Consistency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Methods -->
+            <section id="methods" class="section fade-in">
+                <div class="container">
+                    <h2>Cross-Cultural Negotiation</h2>
+                    <div class="single-col">
 
-            <!-- <figure class="mx-auto">
-                <center><img class="card-img-top" src="./materials/Presentation1.jpg" width="950"/></center>
-                <center><figcaption style="text-align: left;">
-                    <strong>Left: Architecture of the <i>Aligner</i> module and illustration of its behavior in semantic space.</strong>
-                    <br>
-                    The <i>Aligner</i>, a plug-and-play model, stacks upon an upstream LLM (aligned or unaligned). It redistributes initial answers from the upstream model into more helpful and harmless answers, thus aligning the composed LLM responses with human intentions. It is challenging to learn direct mappings from queries to aligned answers. Nonetheless, correcting answers based on the upstream model’s output is a more tractable learning task.
-                    <br>
-                    <strong>Right: Analogy of the <i>Aligner</i> as a residual learning enhancer for LLMs in both architecture and capability aspects.</strong>
-                    <br>
-                    This schematic showcases the <i>Aligner</i> acting similarly to a residual block in neural networks.
-                    It takes an initial output \( y_o \) from the upstream LLM, then the <i>Aligner</i> applies its autoregressive capabilities to generate a corrected version \( y_c \).
-                    Just as a residual block uses a shortcut to add modifications without changing the base structure, the <i>Aligner</i> employs a ''copy and correct'' method, overlaying improvements onto the original answer without altering its fundamental structure.
-                    This parallel highlights the <i>Aligner</i>'s dual role in preserving the initial response while enhancing it to better align with desired outcomes.
-                    
-                </figcaption></center>
-            </figure> -->
-<!--                <video width="650" loop autoplay muted>-->
-<!--                    <source src="materials/teaser-2.mp4" type="video/mp4">-->
-<!--                </video>-->
+                        <div class="figure">
+                            <img src="images/debate_methods.svg"
+                                alt="Comparison of traditional debate-based consensus methods and our method">
+                            <p class="caption"><strong>Figure 1:</strong> Comparison of traditional debate-based
+                                consensus methods and our method. Traditional methods suffer from bias, unfairness,
+                                and lack of convergence guarantees. Our approach uses PSRO with custom utility
+                                functions to reach a fair, Nash Equilibrium-based cultural consensus.</p>
+                        </div>
 
-<!--                <br><br>-->
-<!--                -->
-<!--                <video width="960" loop autoplay muted>-->
-<!--                    <source src="materials/all_results.mp4" type="video/mp4">-->
-<!--                </video>-->
-
-                <!-- <br><br> -->
-
-                <!-- <video width="800" loop autoplay muted style="border:1px solid black">
-                    <source src="materials/new3.mp4" type="video/mp4">
-                </video>
- -->
-            
-            <br>
-            <hr>
-            <br>
-            <figure class="mx-auto">
-                <center><img class="card-img-top" src="./figures/aligner_performance.png" width="750px"/></center>
-                <center><figcaption style="text-align: left;">
-                    <b>Performance of <i>Aligner</i> Models</b><br>
-                    It is shown that <i>Aligner</i> achieves significant performances in all the settings. All assessments in this table were conducted based on integrating various models with Aligners to compare with the original models to quantify the percentage increase in the <i>3H</i> standard. When integrated and assessed in conjunction with various upstream models, the <i>Aligner</i> requires only a single training session (<i>i.e.</i>, the <i>Aligner</i> can operate in a zero-shot manner and enhance the performance of all upstream models.)
-                    
-                </figcaption></center>
-            </figure>
-            
-
-        <!-- </center> -->
-    </section>
-    
-    
-
-    
-    
-    <section id="method"/>
-        <hr>
-        <h2>Overview of <i>Aligner</i> Methodologies</h2>
-
-            <!-- <br><br> -->
-
-            <!-- <figure class="mx-auto">
-
-                <center><img class="card-img-top" src="./materials/paradiam-new2.jpg" style="width:950px"></center>
-                <br>
-                <center><figcaption style="text-align: left;">
-                    <b>An illustration of our methodology.</b><br>
-                    The Superalignment problem focuses on scaling human oversight for supervising increasingly intelligent and complex AI systems. The <i>Weak-to-Strong Generalization</i>
-                    <cite>
-                        Weak-to-strong generalization: Eliciting strong capabilities with weak supervision.
-                    </cite> 
-                    analogy emphasizes using weaker models to supervise stronger ones. Our approach composes weak and strong models to offer iteratively scalable supervision.
-                </figcaption></center>
-            </figure> -->
-
-<!-- 
-            <hr>
-            <br> -->
-            
-            <figure class="mx-auto">
-                <!--                <left><p>The proposed framework that composes a "generator" and an ensemble of "scorers" through iterative consensus enables zero-shot generalization across a variety of multimodal tasks.</p></left>-->
-                <center><img class="card-img-top" src="./figures/method_comparsion.jpg" style="width:950px"></center>
-                <br>
-                <center><figcaption style="text-align: left;">
-                    <!-- <b>Overview of Alignment Methodologies</b><br> -->
-                     The <i>Aligner</i> module, noted for its flexibility, is not constrained by specific model parameters or configurations. In contrast, traditional methods such as RLHF are limited by their need for direct access to a model's parameters. With the growth of model sizes, such as those with over 70B parameters
-                    <cite>
-                        Llama 2: Open foundation and fine-tuned chat models.
-                    </cite>
-                    , RLHF's computational demands have increased. Filter-based methods often overcorrect when replacing unsafe responses with refusals, sometimes eliminating even the safe parts of the response. An alternative approach combines both user prompts and model responses to moderation filtering
-                    <cite>
-                        Beavertails: Towards improved safety alignment of LLM via a human-preference dataset.
-                    </cite>
-                    ; however, it also depends on the model’s ability to generate safe responses.
-                </figcaption></center>
-            </figure>
-            <br>
-
-            <!-- <div class="mx-auto"> -->
-<!--                <left><p>The proposed framework that composes a "generator" and an ensemble of "scorers" through iterative consensus enables zero-shot generalization across a variety of multimodal tasks.</p></left>-->
-                
-            <!-- </div> -->
-            <!-- <div class="row">
-                    <div class="column4">
-                        <center><img class="card-img-top" src="materials/framework.png" style="width:400px"></center>
+                        <h3>Formalization</h3>
+                        <p>We model the cultural negotiation process as a two-player extensive-form game,
+                            represented by the quintuple: Γ ≐ ⟨𝓘, 𝓖, 𝓦, 𝓤, 𝓗⟩, where:</p>
+                        <ul>
+                            <li><strong>Cultural Entities:</strong> 𝓘 ≐ {A, B}, the set of two distinct cultural
+                                entities involved in the negotiation.</li>
+                            <li><strong>Guideline Sets:</strong> 𝓖 ≐ {Gi | i ∈ 𝓘}, each guideline g ∈ Gi is
+                                structured as a triple g = ⟨content, reason, description⟩.</li>
+                            <li><strong>Guideline Weights:</strong> 𝓦 ≐ {Wi | i ∈ 𝓘}, for each culture i ∈ 𝓘, Wi
+                                ∈ Δ(Gi) denotes a probability distribution over its guidelines.</li>
+                            <li><strong>Utility Functions:</strong> 𝓤 ≐ {Ui | i ∈ 𝓘}, quantify the utility each
+                                culture derives from different guideline combinations.</li>
+                            <li><strong>Negotiation History:</strong> 𝓗, the sequence of utterances and proposals
+                                exchanged in negotiation.</li>
+                        </ul>
                     </div>
 
-                    <div class="column4">
-                        <video width="400" loop autoplay muted>
-                            <source src="materials/teaser3.mp4" type="video/mp4">
-                        </video>
+
+                    <h3>Utility</h3>
+                    <p>Drawing on the theory of <em>overlapping consensus</em>, we define utility on three primary
+                        components:</p>
+                    <div class="utility-components">
+                        <div class="utility-component">
+                            <h4>Consistency</h4>
+                            <p>Measures the extent to which a cultural entity maintains its core principles</p>
+                        </div>
+                        <div class="utility-component">
+                            <h4>Acceptance</h4>
+                            <p>Measures the degree to which its proposals are acceptable to the other party</p>
+                        </div>
+                        <div class="utility-component">
+                            <h4>Novelty</h4>
+                            <p>Penalizes redundancy and encourages innovation in negotiation</p>
+                        </div>
                     </div>
-            </div>
- -->
-<!--            <div class="flex-row">-->
-<!--                <div class="mx-auto">-->
-<!--                    <left><p><b>Overview of the proposed unified framework.</b> Dashed lines are omitted for certain tasks. Orange lines represent the components used to refine the generated result.</p></left>-->
-<!--                    <br>-->
-<!--                    <center><img class="card-img-top" src="materials/framework.png" style="width:400px"></center>-->
+                    <h3>Negotiation Process</h3>
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <h4>Initialization</h4>
+                            <p>Each culture is assigned an initial guideline set that reflect its core cultural values.
+                            </p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <h4>Negotiation Iteration</h4>
+                            <p>Each round consists of interim consensus (computing Nash Equilibrium) and new claimed
+                                proposals (best response step).</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <h4>Final Consensus</h4>
+                            <p>Negotiation continues until no new guidelines are added. Final weights encode the
+                                negotiated cross-cultural consensus.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Framework -->
+            <section id="framework" class="section bg-light fade-in">
+                <div class="container">
+                    <h2>Framework</h2>
+                    <div class="figure full-width">
+                        <img src="images/debate_framework.svg"
+                            alt="Overview of our PSRO-based cross-cultural negotiation method">
+                        <p class="caption"><strong>Figure 2:</strong> Overview of our PSRO-based cross-cultural
+                            negotiation method. The process begins with each agent proposing an initial set of core
+                            cultural guidelines. Through iterative negotiation rounds, agents analyze each other's
+                            strategy, propose new guidelines, and update their strategy distributions. The process
+                            continues until no new high-utility guidelines emerge.</p>
+                    </div>
+                    <h3>Regional Cultural Agent</h3>
+                    <p>To validate our cross-cultural negotiation method, we first construct representations of single
+                        cultures and then evaluate the resulting consensus. We employ a fine-tuning approach based on
+                        WVS to model distinct regional cultural perspectives.</p>
+                    <div class="figure">
+                        <img src="images/culture_map.svg"
+                            alt="Comparison between our agents and human ground truth in Hofstede's Cultural Dimensions and Inglehart-Welzel Cultural Map">
+                        <p class="caption"><strong>Figure 3:</strong> Comparison between our agents and human
+                            ground truth in Hofstede's Cultural Dimensions and Inglehart-Welzel Cultural Map.
+                        </p>
+                    </div>
+                    <p>We begin by modeling a single culture for cross-cultural negotiation. However, LLMs that
+                        have undergone safety alignment often cannot adequately represent the values of specific
+                        regions when relying solely on prompt-based methods.</p>
+                    <p>To address this, we selected one representative country from each of eight cultural
+                        clusters, as defined by the Inglehart-Welzel Cultural Map (Iraq, U.S., Russia, Mexico,
+                        China, Denmark, Spain, and Thailand), and obtained fine-tuned Regional Cultural Agents
+                        for each.</p>
+                    <p>We employ an LLM to convert each multiple choice question-answer pair into an open-ended,
+                        text-based question-answer pair. This procedure is applied to all WVS projects across
+                        eight countries, yielding approximately <strong>150,000</strong> synthetic instances for
+                        fine-tuning.</p>
+                    <h3>Consensus Evaluation Toolkit</h3>
+                    <div class="evaluation-metrics">
+                        <div class="evaluation-metric">
+                            <h4>Model-Level Evaluation</h4>
+                            <p>We apply two well-established methods to quantify the cultural tendencies of fine-tuned
+                                LLMs:</p>
+                            <ol>
+                                <li><strong>Inglehart-Welzel Cultural Map</strong> - We prompt the model with
+                                    representative WVS questions and locate its aggregated answers on the map.</li>
+                                <li><strong>Hofstede dimensions</strong> - Developed through comparative analysis of
+                                    matched country samples using the Values Survey Module (VSM).</li>
+                            </ol>
+                        </div>
+                        <div class="evaluation-metric">
+                            <h4>Response-Level Evaluation</h4>
+                            <p>We use two complementary metrics:</p>
+                            <ol>
+                                <li><strong>Perplexity-based Acceptance</strong> - Measures how readily the consensus is
+                                    embraced by different cultural parties.</li>
+                                <li><strong>Value Self-Consistency</strong> - Quantifies how firmly each culture
+                                    maintains its foundational positions.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
 
-<!--                    <br><br>-->
+            </section>
+            <!-- Experiments -->
+            <section id="experiments" class="section fade-in">
+                <div class="container">
+                    <h2>Experiments</h2>
+                    <h3>Experimental Setup</h3>
+                    <div class="setup-items">
+                        <div class="setup-item">
+                            <h4>Negotiation Topics Collection</h4>
+                            <p>We construct a dataset of 457 debate-oriented questions spanning 6 categories by
+                                screening and rephrasing items from the Pew Global Attitudes Survey (GAS) and WVS.</p>
+                        </div>
+                        <div class="setup-item">
+                            <h4>Baselines</h4>
+                            <p>We implement two baselines: <strong>Consultancy</strong> (agents revise answers after
+                                considering other cultures) and <strong>Debate</strong> (agents participate in
+                                multi-turn debate until consensus).</p>
+                        </div>
+                        <div class="setup-item">
+                            <h4>Our Method</h4>
+                            <p>Each agent optimizes a utility function that balances Consistency, Acceptance, and
+                                Novelty (weighted 5:5:2).</p>
+                        </div>
+                    </div>
+                    <h3>Experimental Results</h3>
+                    <h4>Consensus Quality</h4>
+                    <div class="figure">
+                        <img src="images/pca_plot.svg" alt="Comparison of consensus fairness among three methods">
+                        <p class="caption"><strong>Figure 4:</strong> Comparison of consensus fairness among
+                            three methods. Each point represents the consensus position for a topic. Our method
+                            achieves balanced consensus near the diagonal, while baselines exhibit bias toward
+                            majority positions.</p>
+                    </div>
+                    <p>Our method achieves higher consensus improvement ratios while maintaining
+                        self-consistency compared to the baselines. PPL-based Acceptance indicates reduced
+                        perplexity differences between negotiating agents, suggesting that the consensus reached
+                        is more acceptable to both parties despite cultural differences.</p>
+                    <p>Value Self-Consistency indicates our method maintains agents' initial cultural stances
+                        while achieving mutually acceptable solutions. This suggests that our approach preserves
+                        cultural integrity while constructing consensus across cultural boundaries.</p>
 
-<!--                    &lt;!&ndash; <video width="800" loop autoplay muted style="border:1px solid black"> &ndash;&gt;-->
-<!--                    <video width="850" loop autoplay muted controls>-->
-<!--                        <source src="materials/new3-2.mp4" type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
+                    <div class="results-table">
+                        <h4>Table 1: Comparison of consensus quality among three methods</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Country Pairs</th>
+                                        <th colspan="3">Average PPL-based Acceptence</th>
+                                        <th colspan="3">Average Value Self-Consistency</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Our Method</th>
+                                        <th>Consultancy</th>
+                                        <th>Debate</th>
+                                        <th>Our Method</th>
+                                        <th>Consultancy</th>
+                                        <th>Debate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>China and Iraq</td>
+                                        <td class="highlight">90.87%</td>
+                                        <td>55.05%</td>
+                                        <td>53.77%</td>
+                                        <td class="highlight">53.15%</td>
+                                        <td>51.97%</td>
+                                        <td>51.41%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>U.S. and Iraq</td>
+                                        <td class="highlight">83.31%</td>
+                                        <td>20.30%</td>
+                                        <td>28.29%</td>
+                                        <td class="highlight">53.83%</td>
+                                        <td>48.94%</td>
+                                        <td>44.76%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Russia and Mexico</td>
+                                        <td class="highlight">84.49%</td>
+                                        <td>49.35%</td>
+                                        <td>48.11%</td>
+                                        <td class="highlight">56.38%</td>
+                                        <td>53.50%</td>
+                                        <td>56.27%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td class="highlight">83.88%</td>
+                                        <td>38.87%</td>
+                                        <td>41.00%</td>
+                                        <td class="highlight">56.43%</td>
+                                        <td>50.04%</td>
+                                        <td>50.00%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h3>Consensusal Agent Fine-tuning</h3>
+                    <div class="two-col">
+                        <div class="col">
+                            <p>We conduct cross-cultural negotiations between agents representing different regional
+                                cultural values and extract response preference pairs from these interactions for DPO
+                                fine-tuning. These pairs reflect how agents shift from their initial cultural stances to
+                                more mutually agreeable positions.</p>
+                            <p>When plotted on the Inglehart-Welzel Cultural Map, the consensual agents' coordinates are
+                                closer together than their original points, reflecting a more balanced and moderate
+                                value orientation. Both agents exhibit a shift toward the traditional pole on the
+                                <em>traditional-secular</em> dimension, showing a shared tendency toward traditional
+                                values in the consensus.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="figure">
+                                <img src="images/debate_map.svg"
+                                    alt="Culture agents' performance in Inglehart-Weizel Cultural Map after fine-tuned with the negotiation data">
+                                <p class="caption"><strong>Figure 6:</strong> Culture agents' performance in
+                                    Inglehart-Weizel Cultural Map after fine-tuned with the negotiation data. The
+                                    consensus circle shows the area where two different culture groups' opinions meet.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Utility Ablation</h3>
+                    <div class="two-col">
+                        <div class="col">
+                            <p>To evaluate the influence of different utility components on negotiation, we conduct
+                                ablation studies by varying the weights assigned to Consistency, Acceptance and Novelty.
+                            </p>
+                            <p>The results indicate that increasing the weight of consistency while reducing acceptance
+                                leads to more efficient consensus, as agents more rapidly settle on compatible
+                                positions.</p>
+                            <p>The ablation study also demonstrates the necessity of including a novelty component, as
+                                its absence can result in neglection of the exploration of potentially beneficial
+                                directions.</p>
+                        </div>
+                        <div class="col">
+                            <div class="figure">
+                                <img src="images/heatmap.svg"
+                                    alt="Required rounds under varying weightings of Consistency, Acceptance, and Novelty">
+                                <p class="caption"><strong>Figure 7:</strong> Required rounds under varying weightings
+                                    of Consistency, Acceptance, and Novelty.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-<!--                <br><br>-->
-<!--                <p><b>Image generation: </b> A pre-trained diffusion model is used as the generator, and multiple scorers, such as CLIP and image classifiers, are used to provide feedback to the generator.</p>-->
-<!--                <p><b>Video question answering: </b> GPT-2 is used as the generator, and a set of CLIP models are used as scorers.</p>-->
-<!--                <p><b>Grade school math: </b> GPT-2 is used as the generator, and a set of question-solution classifiers are used as scorers.</p>-->
-<!--                <p><b>Robot manipulation: </b> MPC+World model is used as the generator, and a pre-trained image segmentation model is used to compute the scores from multiple camera views to select the best action.</p>-->
-
-<!--            </div>-->
- </section>
-        
-    <section id="interp">
-        <hr>
-        <h2>Aligner Interpretability</h2>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <img src="./figures/intep_correction.png" style="width: 30%;">
-            <img src="./figures/intep_copy.png" style="width: 28.35%;">
-            <img src="./figures/intep_representation_control.png" style="width: 40%;">
-        </div>
-        <br>
-        <figcaption style="text-align: left;">
-            <strong>Interpretability of the <i>Aligner</i> module.</strong>
-            <br>
-            Interpretability experiment results on <i>Aligner</i>: <strong>(a)(b)</strong> The LAT scan graph of <i>Aligner</i>'s each layer when generating the first 20 output tokens for two given question-answer pairs. A higher value in the graph indicates a more active correction representation in that layer. Specifically, (a) exhibits raised activity, suggesting an enhanced correction action in the output, whereas (b) displays a tendency towards copying the original response. Moreover, the distinct differences between the two graphs are mainly observed in the early layers. This indicates that the decision regarding the degree of correction is made in the early layers of <i>Aligner</i>. <strong>(c)</strong> The control experiment shows the effectiveness of the extracted correction representation vector in modulating the <i>Aligner</i>'s correction behavior. The relationship between the Average Levenshtein Ratio and representation vector coefficients is approximately linear, with an \(R^2\) value of approximately 0.93.
-        </figcaption>
-    </section>
-
-    <section id="results">
-        <hr>
-        <h2>Results Overview</h2>
-            <figure class="mx-auto">
-                <center><img class="card-img-top" src="./figures/4in1_1209.jpg" style="width:950px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    <strong>Distribution of helpfulness and harmlessness scores in training and evaluation sets. </strong>
-                    <br>
-                     <b>(a)</b> The distribution shift in answers and correctional answers in the training dataset; <br>
-                     <b>(b)</b> redistribution shift of <i>Aligner</i>-7B, based on upstream models such as GPT-4 (b1), Alpaca-7B (b2) and Llama2-70B-Chat (b3).<br> 
-                     Based on the figure, we found that:<br>
-                     <strong>(1)</strong> The correctional answer in the training dataset surpasses the original answers in terms of both helpfulness and harmlessness; <br>
-                     <strong>(2)</strong> The refuse-to-answer pattern of GPT-4 created an area of overcorrected answers where both helpful and harmless scores are low, and our <i>Aligner</i>-7B improved these answers by providing additional information and corrections. <br>
-                     <strong>(3)</strong> The Alpaca-7B model, which is not aligned, had its answers corrected by our <i>Aligner</i>-7B, significantly increasing both scores. <br>
-                     <strong>(4)</strong> The Llama2-70B-Chat model is already aligned (the average safety score is higher than the correction in the training dataset), and the correction of <i>Aligner</i>-7B enhanced the helpfulness significantly while maintaining the harmless score.<br>
-                     <strong>For detailed performance result of <i>Aligner</i> models, please refer to <a href="#detail">Detailed Results</a>.</strong>
-                </figcaption>
-            </figure>
-            <hr>
-            <br>
-            <!-- <div class="mx-auto" style="display: flex; justify-content: center; align-items: center;">
-                <img src="materials/test_gpt_4.gif" style="width: 450px; margin-right: 50px;">
-                <img src="materials/test_gpt_2.gif" style="width: 450px;">
-            </div> -->
-            <div class="mx-auto" style="display: flex; justify-content: center; align-items: center;">
-                <img src="./figures/test_gpt_4.gif" style="width: 550px">
-                <center><figcaption style="text-align: left;">
-                    <b>Distribution shift of helpful and harmless scores in the training process of <i>Aligner</i>-7B model</b><br>
-                     This figure shows the distribution shift of helpfulness and harmlessness scores in the evaluation of checkpoint models of our <i>Aligner</i>-7B model. In the training process, the model has quickly learned the correction pattern in a relatively short time, and the learning process exhibits strong transparency and parameter efficiency. 
-                </figcaption></center>
-            </div>
-            <br>
-    
-    </section> 
-
-    <section id="detail">
-        <hr>
-        <h2>Detailed Results</h2>
-            <br><br>
-            <!-- <figure class="mx-auto">
-                <center><img class="card-img-top" src="materials/table_2.jpg" style="width:750px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    <b><i>Weak-to-strong generalization</i> results</b><br>
-                    The results demonstrate that <i>Aligner</i>-7B can achieve <i>weak-to-strong generalization</i> on 7B, 13B, and 70B upstream models with existing alignment methods using the labels given by the <i>Aligner</i>. This process entails enhancing the capabilities of a stronger model by finetuning it with labels generated from a weaker model.
-                </figcaption>
-            </figure>
-            <hr>
-            <br> -->
-            
-            <figure class="mx-auto">
-                <center><img class="card-img-top" src="./figures/warmup.jpg" style="width:950px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    <b>Ablation Study: Different <i>Identity Mapping</i> Proportions</b><br>
-                    We first trained an identity <i>Aligner</i> for identity mapping, followed by extensive residual Q-A-C learning based on this <i>Aligner</i>. Specifically, we formed the Q-A-A dataset by extracting partial data from the training dataset in proportions of 2%, 10%, 20%, and 50%. The table presents our control experiments with a 50K training dataset, showing that extracting 20% of the data (<i>i.e.</i>, 10K dataset size) for initial constant identity training yields relatively better results.
-                </figcaption>
-            </figure>
-            <hr>
-            <br>
-
-            <!-- <div class="mx-auto" style="display: flex; justify-content: center; align-items: center;">
-                <img src="materials/test_gpt_4.gif" style="width: 450px; margin-right: 50px;">
-                <img src="materials/test_gpt_2.gif" style="width: 450px;">
-            </div> -->
-            <!-- <figure class="mx-auto">
-                <center><img class="card-img-top" src="materials/table_6.jpg" style="width:950px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    <b>Performance of <i>Aligner</i> Models</b><br>
-                     It is shown that <i>Aligner</i> achieves significant performances in all the settings. All assessments in this table were conducted based on integrating various models with <i>Aligners</i> to compare with the original models to quantify the percentage increase in helpfulness and harmlessness. The background color represents the type of target language model: green represents API-based models, orange represents open-source models without safety alignment, and blue represents safety-aligned open-source models. The icon <i class="fas fa-lock" style="color: rgba(0, 0, 0, 0.7);"></i>  indicates the model parameters are not accessible and <i class="fas fa-shield-alt" style="color: rgba(0, 0, 0, 0.7);"></i>  indicates the model is safety-aligned. 
-                </figcaption>
-            </figure>
-            <hr>
-            <br> -->
-            
-            <figure class="mx-auto">
-                <center><img class="card-img-top" src="./figures/vs_cai.jpg" style="width:850px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    Comparison to Self-Refine, Critique Methods<br>
-                    Constitutional AI (CAI) <cite>
-                        Constitutional ai: Harmlessness from ai feedback.
-                    </cite>, Self-Critique <cite>
-                        Self-critiquing models for assisting human evaluators
-                    </cite>, and Self-Refine <cite>
-                        Self-Refine: Iterative Refinement with Self-Feedback
-                    </cite>, primarily utilize the self-critiquing and refining capabilities of LLMs to enhance their performance. We employ CAI prompts solely during the inference time of LLMs to encourage self-revision of their answers. As demonstrated in the table above, our method, <i>Aligner</i>, outperforms the baseline considering both helpfulness and harmlessness dimensions. Additionally, baseline methods typically require multiple dialogue iterations and extended context windows for prompt insertion and ongoing self-correction. This could result in longer inference times and considerable consumption of context window length.
-                </figcaption>
-            </figure>
-            <hr>
-            <br>
-            
-            <figure class="mx-auto">
-                <center><img class="card-img-top" src="./figures/vs_rlhf.png" style="width:750px"></center>
-                <br>
-                <figcaption style="text-align: left;">
-                    Performance of <i>Aligner</i> on the Various Preference Datasets<br>
-                    To demonstrate the independence of <i>Aligner</i> from specific datasets, we utilized various open-source RLHF preference datasets. Specifically, we trained on HH-RLHF<cite>
-                        Training a helpful and harmless assistant with reinforcement learning from human feedback.
-                    </cite> ,PKU-SafeRLHF <cite>
-                        Beavertails: Towards improved safety alignment of LLM via a human-preference dataset.
-                    </cite><cite>
-                        Safe rlhf: Safe reinforcement learning from human feedback.
-                    </cite> and Utral-Feedback <cite>
-                        UltraFeedback: Boosting Language Models with Scaled AI Feedback
-                    </cite>
-                        datasets and compared <i>Aligner</i> with SFT, RLHF, and DPO. After fine-tuning Alpaca-7B with SFT, RLHF, and DPO, we compare these models against the original Alpaca-7B corrected by <i>Aligner</i>. The experiment results (as shown in the table above) indicate that <i>Aligner</i>'s performance in enhancing the original model's capabilities is comparable to, or exceeds, that of the baseline methods. Notably, models finetuned with RLHF or DPO tend to generate either conservative answers or fail to recognize dangers while adding helpful information explicitly. Importantly, training with RLHF or DPO methods requires optimizing significantly more models and consuming more training resources than just training an <i>Aligner</i>, <i>e.g.</i>, for a 70B model, DPO needs 11.25 times and RLHF 22.5 times more resources than <i>Aligner</i>. 
-                </figcaption>
-            </figure>
-    
-    </section> 
-
-    <section id="application">
-        <hr>
-        <h2>Applications</h2>
-        <!-- <p style="font-size: 23px;"><b></b></p> -->
-        <p style="font-size: 23px;"><strong> #1: Multi-round RLHF training via Aligner</strong></p>
-        <p style="font-size: 20px;"><b>New Multi-round Training Pipeline</b></p>
-        <p>As a data augmentation tool, <i>Aligner</i> can enhance the upstream model's response \(A\) into an improved response \(A^*\), thereby forming a synthetic preference dataset. This dataset can be used to further train the upstream model via RLHF/DPO. Repeating this process allows for multi-round RLHF or DPO.</p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/multi_round_pipeline.png" style="width:950px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                This paradigm brings many <b>advantages</b>:
-                <ul>
-                    <li>The <i>Aligner</i> inherits the feature of transferring from the dispreferred distribution to the preferred distribution in the preference dataset.</li>
-                    <li><i>Aligner</i> modifies the upstream model to produce better answers, bringing the distribution of resulting preference dataset closer to the answer distribution of the upstream model. This effectively mitigates the reward model collapse problem caused by out-of-distribution (OOD) preference datasets.</li>
-                    <li>The <i>Aligner</i> serves as a synthetic data generator, providing an efficient and repeatable method for constructing preference datasets.</li>
-                </ul>
-            </figcaption>
-        </figure>
-
-        <p style="font-size: 20px;"><b>Performance</b></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/multi_round_performance.jpg" style="width:750px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                We conducted three rounds of RLHF and DPO on Alpaca2-7B using the three-round preference dataset from PKU-SafeRLHF. Following this, we trained three rounds of <i>Aligner</i>s with the same three-round preference datasets, which were then employed to refine the upstream model and generate new preference datasets. These synthetic preference datasets were subsequently used to fine-tune the upstream model. As illustrated in Figure above, the introduction of <i>Aligner</i>-corrected new preference datasets enabled the upstream model to improve both utility and safety simultaneously. In contrast, a typical multi-round RLHF/DPO pipeline only enhances utility, leaving the responses unsafe.
-            </figcaption>
-        </figure>
-
-        <p style="font-size: 23px;"><strong> #2: A New Alternative to Inference-time Intervention Methods</strong></p>
-        <p> We also conducted supplementary experiments with BoN and beam search as alternative inference-time intervention methods. <i>Aligner</i> continues to demonstrate superior performance compared to these approaches. </p>
-        <p style="font-size: 20px;"><b>Performance</b></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/vs_bon.png" style="width:750px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                This table shows that <i>Aligner</i> consistently outperforms inference-time intervention methods such as BoN with N = 5 and N = 10, as well as <i>Beam Search (BS)</i>, across various settings. All assessments are conducted by integrating <i>Aligner</i> with different upstream models and then compare the results with upstream models inferenced using inference-time intervention methods <i>(X)</i> to measure the percentage increase in the <i>3H</i> standard.
-            </figcaption>
-        </figure>
-
-        <p style="font-size: 23px;"><strong> #3: Controllable Refinement</strong></p>
-        <p> <i>When refining the model's answer using <i>Aligner</i>, can providing feedback during the refinement process improve performance?</i></p>
-
-        <p> To explore this, we conduct a validation experiment where feedback is incorporated into <i>Aligner</i>'s refinement process. Rather than performing additional fine-tuning, we integrated specific prompts as feedback during <i>Aligner</i>'s refinement of the pre-aligned model's responses. In these experiments, <i>Aligner</i> was instructed to prioritize empathy, helpfulness, or harmlessness.</p>
-        <p style="font-size: 20px;"><b>Performance</b></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/control_refinement.png" style="width:500px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                After evaluating on the BeaverTails and empathy datasets, we observed that the trained <i>Aligner</i> retained its instruction-following capabilities and showed metric improvements with the specific feedback provided.
-            </figcaption>
-        </figure>
-        <p>These experiments demonstrate that, once trained, <i>Aligner</i> can incorporate prompt-based feedback during refinement to achieve fine-grained adjustments. The above finding enhances <i>Aligner</i>'s versatility and applicability in real-world scenarios. By using prompts, we can guide <i>Aligner</i>'s refinement to achieve precise adjustments, such as in an Instruct-<i>Aligner</i> setup.</p>
-
-        <p style="font-size: 23px;"><strong>#4: Weak-to-Strong Correction via Aligner</strong></p>
-        <p>As AI systems reach human-level performance across various tasks and undertake increasingly complex activities that are hard for humans to grasp, it becomes progressively challenging to provide ongoing, reliable feedback and ensure that their behaviors align with human intentions. This brings forth the significant issue of the Superalignment problem: <em>How can we deliver supervisory signals to advanced AI systems and ensure they remain aligned with human goals?</em><cite> 
-            AI Alignment: a Comprehensive Survey
-        </cite><cite>
-            Concrete problems in AI safety.
-        </cite>. <em>Weak-to-strong generalization</em> is a training paradigm that leverages supervisor signals provided by weak models to enhance the performance of strong models. The weak to strong paper<cite>
-            Weak-to-strong generalization: Eliciting strong capabilities with weak supervision.
-        </cite> has conducted preliminary trials in NLP classification, chess puzzles, and reward modeling tasks, observing positive gains by simply fine-tuning strong pre-trained models using pseudo-labels produced by weak models. This paradigm is analogous to the concept of "teaching" where the weak model instructs the strong one.</p>
-
-        <p style="font-size: 20px;"><strong>Illustration of our pipeline</strong></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/w2s_illustration.png" style="width:950px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                <strong>Left:</strong> With the input of user prompts, The weak to strong paper<cite>
-                    Weak-to-strong generalization: Eliciting strong capabilities with weak supervision.
-                </cite> directly uses a weak model to generate supervisory labels to fine-tune the strong model. <strong>Right (Ours):</strong> Based on both user prompts and the response from the strong model, the weak model (i.e., <i>Aligner</i>) generates an improved response, which can serve as labels for fine-tuning the strong model.
-            </figcaption>
-        </figure>
-
-        <p style="font-size: 20px;"><strong>Pipeline of Weak-to-Strong Correction</strong></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/w2s_paradigm.png" style="width:550px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                <strong>Left:</strong> With the input of user prompts, The weak to strong paper<cite>
-                    Weak-to-strong generalization: Eliciting strong capabilities with weak supervision.
-                </cite> directly uses a weak model to generate supervisory labels to fine-tune the strong model. <strong>Right (Ours):</strong> Based on both user prompts and the response from the strong model, the weak model (i.e., <i>Aligner</i>) generates an improved response, which can serve as labels for fine-tuning the strong model.
-            </figcaption>
-        </figure>
-
-        <p style="font-size: 20px;"><strong>Performance</strong></p>
-        <figure class="mx-auto">
-            <center><img class="card-img-top" src="./figures/w2s_performance.png" style="width:750px"></center>
-            <br>
-            <figcaption style="text-align: left;">
-                The table above shows that the weak labels from <i>Aligner</i>-7B and <i>Aligner</i>-13B improve the performance of Llama2 series strong model in all scenarios when used for finetuning an upstream model via SFT. Additional observations are as follows:
-                <ul>
-                    <li>The RLHF and DPO methods significantly improve the upstream model's performance on certain metrics. However, they do not completely surpass the strong model's original capabilities, particularly regarding decreased helpfulness. This decline is due to these models' tendency to conservative patterns (i.e., qualitative answers with less informational content). This suggests that the two-stage learning process of reward modeling and policy optimization, compared to SFT's direct label-based mapping, may introduce more feature noise and information loss, making accurate optimization more challenging.</li>
-                    <li>The RLHF method outperforms the DPO method in general. Given that the training data for weak-to-strong generalization is based on the output from the upstream model, subsequently aligned by <i>Aligner</i>-7B. The RLHF method shows better performance in this semi-online setting.</li>
-                    <li>The safety improvement is more substantial than that in helpfulness. Safety is easier to assess compared to helpfulness and can more readily be enhanced through simple rejection.</li>
-                </ul>
-            </figcaption>
-        </figure>
-    </section>
-        <!-- <h2>Constraint Satisfaction</h2>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Combining Stacking Constraints</b></p></center>
-                <img class="card-img-top" src="materials/stack_1.gif" style="width:33%">
-                <img class="card-img-top" src="materials/stack_2.gif" style="width:33%">
-                <img class="card-img-top" src="materials/stack_3.gif" style="width:33%">
-            </div>
-            <div class="mx-auto">
-                <img class="card-img-top" src="materials/stack_caption.png" style="width:99%">
-            </div>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Combining Rearrangement Constraints</b></p></center>
-                <img class="card-img-top" src="materials/rearrange_1.gif" style="width:33%">
-                <img class="card-img-top" src="materials/rearrange_2.gif" style="width:33%">
-                <img class="card-img-top" src="materials/rearrange_3.gif" style="width:33%">
-            </div>
-            <div class="mx-auto">
-                <img class="card-img-top" src="materials/rearrange_caption.png" style="width:99%">
-            </div>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>'NOT' constraints in Stacking and Rearrangement</b></p></center>
-                <center>
-                    <img class="card-img-top" src="materials/task_not_1.gif" style="width:33%">
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <img class="card-img-top" src="materials/task_not_2.gif" style="width:33%">
-                </center>
-            </div>
-            <div class="mx-auto">
-                <center>
-                <img class="card-img-top" src="materials/not_constraint_caption.png" style="width:85%">
-                    </center>
-            </div>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Infeasible constraints lead to incoherent behavior</b></p></center>
-                <center>
-                    <img class="card-img-top" src="materials/task_infeasible.gif" style="width:33%">
-                </center>
-            </div>
-            <div class="mx-auto">
-                <center>
-                <img class="card-img-top" src="materials/infeasible_caption.png" style="width:38%">
-                </center>
-            </div>
-        <hr>
-
-        <h2>Skill Composition</h2>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Individual Quadruped Gaits</b></p></center>
-                <img class="card-img-top" src="materials/trott.gif" style="width:33%">
-                <img class="card-img-top" src="materials/pace.gif" style="width:33%">
-                <img class="card-img-top" src="materials/bound.gif" style="width:33%">
-            </div>
-            <div class="mx-auto">
-                <img class="card-img-top" src="materials/skill_caption.png" style="width:99%">
-            </div>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Composing Quadruped Gaits</b></p></center>
-                <img class="card-img-top" src="materials/trott_pace.gif" style="width:33%">
-                <img class="card-img-top" src="materials/bound_pace.gif" style="width:33%">
-                <img class="card-img-top" src="materials/trott_bound.gif" style="width:33%">
-            </div>
-            <div class="mx-auto">
-                <img class="card-img-top" src="materials/skill_compose_caption.png" style="width:99%">
-            </div>
-            <br><br>
-            <div class="mx-auto">
-                <center><p><b>Naive Skill Composition via sum of conditioning variables</b></p></center>
-                <img class="card-img-top" src="materials/trott_pace_cond.gif" style="width:33%">
-                <img class="card-img-top" src="materials/bound_pace_cond.gif" style="width:33%">
-                <img class="card-img-top" src="materials/trott_bound_cond.gif" style="width:33%">
-            </div>
-            <div class="mx-auto">
-                <img class="card-img-top" src="materials/skill_compose_caption.png" style="width:99%">
-            </div>
-            <br><br><br>
-        <hr>
-
-    </section>
-
-
-    <section id="paper">
-        <h2>Team</h2>        
-        <div class="row">
-            <div class="column5">
-                <a href='https://anuragajay.github.io/'>
-                    <img src=./materials/people/aajay2.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname>Anurag Ajay</p>
-                <p class=institution>MIT</p>
-            </div>
-
-            <div class="column5">
-                <a href='https://yilundu.github.io/'>
-                    <img  src=./materials/people/yilun3.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname> Yilun Du </p>
-                <p class=institution>MIT</p>
-            </div>
-
-            <div class="column5">
-                <a href='https://scholar.google.com/citations?user=ynyPc1kAAAAJ&hl=en'>
-                    <img  src=./materials/people/abhi2.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname> Abhi Gupta </p>
-                <p class=institution>MIT</p>
-            </div>
-
-            <div class="column5">
-                <a href='https://scholar.google.com/citations?user=rRJ9wTJMUB8C&hl=en'>
-                    <img  src=./materials/people/josh2.jpg class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname> Joshua Tenenbaum </p>
-                <p class=institution>MIT</p>
-            </div>
-
-            <div class="column5">
-                <a href='http://people.csail.mit.edu/tommi/'>
-                    <img  src=./materials/people/tommi2.png class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname> Tommi Jaakkola </p>
-                <p class=institution>MIT</p>
-            </div>
-
-            <div class="column5">
-                <a href='http://people.csail.mit.edu/pulkit/'>
-                    <img  src=./materials/people/pulkit.jpeg class="figure-img img-fluid rounded-circle" height=200px width=200px>
-                </a>
-                <p class=profname> Pulkit Agrawal </p>
-                <p class=institution>MIT</p>
-            </div>
-    </section>
-   
-    <section id="bibtex">
-        <h2>Bibtex</h2>
-        <div class="page-body"><pre id="ad6975be-3353-467d-ae48-6313d767ffa6" class="code"><code>
-            @inproceedings{
-                ajay2023is,
-                title={Is Conditional Generative Modeling all you need for Decision Making?},
-                author={Anurag Ajay and Yilun Du and Abhi Gupta and Joshua B. Tenenbaum and Tommi S. Jaakkola and Pulkit Agrawal},
-                booktitle={The Eleventh International Conference on Learning Representations },
-                year={2023},
-                url={https://openreview.net/forum?id=sP1fo2K9DFG}
-            }    
-        </code></pre><p id="1a3aa306-c4b8-4872-8fb0-411495c73d55" class="">
-        </p></div> -->
-
-    
-
-
-    <section id="qa">
-        <hr>
-        <h2>FAQ</h2>
-        <div class="flex-row">
-            <!-- <p>
-                <b>Question #1: Why can the Correction training paradigm of Aligner be successful and surpass the performance of SFT?</b>
-                <br>
-                <br>
-                <figure class="mx-auto">
-                    <center><img src="materials/structure_0201_v1.jpg" class="card-img-top" style="width: 550px"></center>
-                </figure>
-                <br>
-                <br>
-                As illustrated in the above diagram, SFT directly maps a query's semantic space to an answer's semantic space (Answer), a process known as cross-domain mapping. This process depends on the base model being already trained to infer and model various semantic spaces. Furthermore, directly learning this mapping poses significant challenges. Conversely, Aligner creates a mapping from the Answer's semantic space to the Correction Answer's semantic space (a better answer). Since these two semantic spaces are closer in distribution, the Aligner training paradigm can be considered a form of residual learning (Residual Correction). Furthermore, we derive data in varying proportions from the Q-A-C training dataset to create Q-A-A data, used for training an Aligner in identity mapping (referred to as the warm-up step). Subsequently, using this Aligner, we train with the entire Q-A-C training dataset. We observe that with a 50K dataset, optimum performance is achieved when the warm-up proportion is 20%; deviations from this proportion negatively affect Aligner's performance. Additionally, aligners subjected to the warm-up training strategy typically outperform those trained directly with the full dataset without a warm-up phase. Beyond the alignment field, ResNet similarly employs this concept to address accuracy decline and convergence challenges associated with increasing neural network depth.
-
-            </p> -->
-            <details>
-                <summary style="font-size: 18px;"><b>Question #1: <i>Aligner vs.</i> SFT/RLHF/Prompt Engineering.</b></summary>
-                <figure class="mx-auto">
-                    <center><img src="materials/Tab1_cap.jpg" class="card-img-top" style="width: 950px"></center>
-                </figure>
-                <br>
-                <b><i>Aligner vs.</i> SFT:</b><br>
-                As illustrated in the Figure1 below, SFT directly creates a cross-domain map from Query semantic space to Answer semantic space. This process depends on the upstream model to infer and model various contexts in the semantic space, which is much harded than learning the correction signals. This is how we creat the "copy + correct" paradigm in <i>Aligner</i>. <i>Aligner</i> essentially creates a mapping from the Answer's semantic space to the Correction Answer's semantic space. We found that these two semantic spaces are closer in distribution, the <i>Aligner</i> training paradigm can be considered a form of residual learning (Residual Correction). Moreover, we derive data in varying proportions from the Q-A-C training dataset to create Q-A-A data, and used this Q-A-A data to train an <i>Aligner</i> in identity mapping (referred to as the warm-up step). Based on this, we then train with the entire Q-A-C training dataset. We observe that with a 50K dataset, the optimum performance is achieved when the warm-up proportion is 20%. Additionally, <i>Aligner</i>s subjected to the warm-up training strategy typically outperform those trained directly with the full dataset without a warm-up phase. At a very high level, ResNet also employed this concept of copy with residual to address the training challenges associated with the increasing neural network depth.
-                <br>
-                <figure class="mx-auto">
-                    <center><img src="materials/Fig1_cap.jpg" class="card-img-top" style="width: 550px"></center>
-                </figure>
-                <br>
-                <br>
-                <b><i>Aligner vs.</i> RLHF:</b>
-                <br>
-                <i>Aligner</i> achieves alignment without relying on Reinforcement Learning from Human Feedback (RLHF) 
-                <cite>
-                    Training language models to follow instructions with human feedback.
-                </cite>
-                . RLHF utilizes pre-collected human preference data to train a reward model. The reward model provides signals to RL algorithms like PPO 
-                <cite>
-                    Proximal policy optimization algorithms.
-                </cite>
-                , guiding the optimization of the model's behavior to align more closely with human expectations. However, RLHF poses significant challenges in practical applications, especially in parameter tuning and its fluctuating effects, complicating the alignment of LLMs 
-                <cite>
-                    Training language models to follow instructions with human feedback.
-                </cite>
-                <cite>
-                    Safe rlhf: Safe reinforcement learning from human feedback.
-                </cite>
-                <cite>
-                    Llama 2: Open foundation and fine-tuned chat models.
-                </cite>
-                . Specifically, the reward model's task of mapping human preference data from discrete to continuous numerical space for optimization presents challenges in training methods and robustness. Unlike sequence-to-sequence (Seq2Seq) models with robust generalization in text space, numerical models such as reward models exhibit weaker text space generalization, contributing to RLHF's instability. <i>Aligner</i> introduces a new alignment paradigm, training a Seq2Seq model to identify the differences (residuals) between aligned and misaligned answers. <i>Aligner</i> offers several significant advantages over RLHF:
-                <p style="text-indent: 40px;">
-                    <b>1.<i>Aligner</i> achieves noticeable alignment with less training data.</b> For instance, with 50K training data, <i>Aligner</i> trained a 7B model, enhancing GPT-4's helpfulness by 19% and safety by 26%, and boosting Vicuna 33B's helpfulness and safety by 51% and 56%, respectively. 
-                </p>
-                <p style="text-indent: 40px;">
-                    <b>2.<i>Aligner</i> offers a simpler training process.</b> It trains a Seq2Seq model for alignment, a more straightforward and manageable process than RLHF's complex reward model learning and RL fine-tuning. RLHF's engineering tuning intricacies and the inherent instability and hyperparameter sensitivity of RL algorithms make its implementation challenging, while <i>Aligner</i>'s simplified approach substantially reduces complexity. 
-                </p>
-                <p style="text-indent: 40px;">
-                    <b>3.Unlike RLHF, <i>Aligner</i> does not require access to model weights.</b> While RLHF is effective in model alignment, it depends on direct model training. The applicability of RLHF is limited with non-open-source API-based models and their specific downstream task fine-tuning requirements. In contrast, <i>Aligner</i> does not require direct manipulation of the model's original parameters. <i>Aligner</i> externalizes alignment needs to an independent module, offering a flexible method. 
-                </p>
-                <p style="text-indent: 40px;">
-                    <b>4.<i>Aligner</i> is not limited by model type.</b> Under RLHF, fine-tuning different models like Llama2 
-                    <cite>
-                        Llama 2: Open foundation and fine-tuned chat models.
-                    </cite>
-                    , Alpaca 
-                    <cite>
-                        Stanford alpaca: An instruction-following llama model.
-                    </cite>
-                    , or Vicuna 
-                    <cite>
-                        Vicuna: An open-source chatbot impressing gpt-4 with 90% chatgpt quality.
-                    </cite>
-                    requires re-collecting preference data and adjusting training parameters in the reward model training and RL phase. <i>Aligner</i> supports any model's alignment with just one-time training. For instance, one-time <i>Aligner</i> training in research improved helpfulness and safety for 11 different models, showcasing its wide generalization capabilities.
-                </p>
-                <p style="text-indent: 40px;">
-                    <b>5.<i>Aligner</i> offers greater flexibility in training resource requirements.</b> Fine-tuning a 70B model using RLHF demands significant computing resources, often needing hundreds of GPU cards. Specifically, RLHF requires loading not just the 70B parameter target model, but also additional reward, Actor, and Critic models with similar parameter sizes. Consequently, RLHF consumes more computing resources per unit time than pre-training. In contrast, <i>Aligner</i>'s training strategy is more flexible, enabling users to select the scale of <i>Aligner</i> training based on their available computing resources. For instance, to align a 70B model, users can choose from various <i>Aligner</i> model scales, like 7B, 13B, or 70B, based on available resources. This flexibility reduces the overall demand for computing resources and enables efficient alignment even with limited resources. Thus, <i>Aligner</i>, adaptable in its training resource requirements, offers an effective, practical strategy for large-scale model alignment, providing various options for users or researchers under different resource constraints.
-                </p>
-                <br>
-                <b><i>Aligner vs. </i> Prompt Engineering (i.e. Self-Correction):</b><br>
-                Prompt Engineering is a widely used method to boost large language models' capabilities, but it faces several significant issues: 1.Designing prompts is challenging, requiring distinct designs for various models, and the effectiveness hinges on each model's capabilities. If a model's abilities fall short for a task, multiple iterations might be required. 2.This approach wastes the context window, as small models' limited context affects performance and overly long contexts hike costs for large models. In contrast, <i>Aligner</i> achieves goals in one step and is not limited by model type. With just one-time training, <i>Aligner</i> supports the alignment of any model. For example, research shows that one-time <i>Aligner</i> training enhanced helpfulness and safety across 11 different models, demonstrating its broad generalization capabilities. Moreover, <i>Aligner</i> saves the precious context window. Additionally, combining it with Prompt Engineering can yield better results. Specifically, we use prompt in CAI.
-                <br>
-                <br>
-                <!-- <b>Further Details are shown in Table 1 below.</b> -->
-                
-
-            </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #2: How does the correction paradigm work in <i>Aligner</i> and why it outperforms SFT?</b></summary>
-                <br>
-                <figure class="mx-auto">
-                    <center><img src="materials/Tab5_cap.jpg" class="card-img-top" style="width: 550px"></center>
-                </figure>
-                <b>From the perspective of mechanism,</b> the training strategy of <i>Aligner</i> satisfies the primary hypothesis: <span class="red-bold-italic" >Correction is generally easier than generation</span>, which makes the Q-A-C (Query-Answer-Correction) training mechanism adopted by <i>Aligner</i> easier to fit the distribution patterns in the training data. Our <i>Aligners</i> are trained in the following mechansim: we first establishes an identity mapping mechanism from Q-A to A, then conducted a residual mapping learning method for Q-A-C. This method is superior to directly training the model to generate responses. Compared to traditional cross-domain mapping (Applied in SFT) from query space to answer space, the correction mechanism establishes an intra-domain mapping between Answer and Correction Answer, producing responses that are superior to direct answer generation. ResNet 
-                <cite>
-                    Deep residual learning for image recognition.
-                </cite>
-                 also uses a similar approach to mitigate the accuracy decline and convergence difficulties caused by increased neural network depth.
-                <br>
-                <br>
-                <b>From the perspective of performance,</b> SFT will, to some extent, alter the capabilities and knowledge of the front-end model, potentially reducing the helpfulness of its outputs. The <i>Aligner</i> makes the alignment task independent of the upstream model,  allowing it to preserve the knowledge and performance of the front-end  model without negative impact. Simultaneously, for originally well-formulated answers, the <i>Aligner</i> aims to either maintain the original response or enhance it with more  helpful details, which will enhance the helpfulness of original answer.
-                <br> 
-                <br>
-            </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #3: <i>Aligner</i> shows significant improvement on GPT-4, does it involve potential data leakage problems? </b></summary>
-                <br>
-                Given the concern about data leakage, we handled the training and evaluation data with utmost care and caution. Multiple checks were performed for duplicates between the evaluation and training dataset prompts to ensure no leakage of evaluation data. 
-                <br>
-                <br>
-                Specifically, we initiate our dataset creation process by conducting query deduplication on sources, e.g., the Stanford Alpaca 
-                <cite><a href="https://huggingface.co/datasets/tatsu-lab/alpaca" target="_blank">
-                    https://huggingface.co/datasets/tatsu-lab/alpaca
-                </a></cite>
-                , user-shared conversations from ShareGPT 
-                <cite><a href="https://sharegpt.com/" target="_blank">
-                    https://sharegpt.com/
-                </a></cite>
-                , HH-RLHF 
-                <cite><a href="https://huggingface.co/datasets/Anthropic/hh-rlhf" target="_blank">
-                    https://huggingface.co/datasets/Anthropic/hh-rlhf
-                </a></cite>
-                 and others. We finally get a set of 27K queries for the following training dataset creation. Subsequently, we use various open-source models e.g., Alpaca-7B, Vicuna-(7B,13B), Alpaca2-(7B,13B) 
-                 <cite>
-                    We fine-tuned Llama2-(7B,13B) using Stanford Alpaca's 52K dataset to get models that only have instruction-following capability without safety alignment, namely Alpaca2-(7B,13B).
-                 </cite>
-                 , and Llama2-(7B,13B)-Chat  to generate responses to these queries, yielding the following data statistics: Following quality filtering and duplicate removal, we ultimately obtain a Query-Answer dataset of 57K pairs for subsequent correction-answer annotation. Finally, we use GPT-4, Human and larger models to annnotate correction answer. 
-                <br>
-                <br>
-                Our evaluation dataset includes selections from BeaverTails 
-                <cite>
-                    Beavertails: Towards improved safety alignment of LLM via a human-preference dataset.
-                </cite>
-                 and HarmfulQA 
-                 <cite>
-                    Red-Teaming Large Language Models using Chain of Utterances for Safety-Alignment.
-                 </cite>
-                 , among which BeaverTails has been accepted by NeurIPS2023 and HarmfulQA has been widely used by community. Particularly, before confirming the final dataset used for evaluation,  we conducted a duplication screening and search of the prompts used for  evaluation against the prompts in the training dataset, ensuring there  were no duplicate data, thereby avoiding the issue of data leakage.
-                <br>
-                <br>
-                Our training code has already been open-sourced. Subsequently, we will open-source both complete datasets and various scaled versions of the <i>Aligner</i> model after review for community use and verification.
-                <br> 
-                <br>
-            </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #4: The training data contain GPT-4 annotations, why does <i>Aligner</i> still improve the GPT-4?</b></summary>
-                <br>
-                From a mechanistic perspective, the training mechanism of <i>Aligner</i> satisfies the primary hypothesis: <span class="red-bold-italic" >Correction is generally easier than generation</span>, which makes the Q-A-C (Query-Answer-Correction) training mechanism adopted by <i>Aligner</i> easier to fit the distribution patterns in the training data. Our <i>Aligner</i>s are trained in the following mechansim: we first establishes an identity mapping mechanism from Q-A to A, then conducted a residual mapping learning method for Q-A-C. This method is superior to directly training the model to generate responses. Compared to traditional cross-domain mapping from query space to answer space, the correction mechanism establishes an intra-domain mapping between Answer and Correction Answer, producing responses that are superior to direct answer generation. This is consistent with the ideas of baseline methods like Constitutional AI 
-                <cite>
-                    Constitutional ai: Harmlessness from ai feedback.
-                </cite>
-                , and outside the alignment field, ResNet 
-                <cite>
-                    Deep residual learning for image recognition.
-                </cite>
-                also uses a similar approach to mitigate the accuracy decline and convergence difficulties caused by increased neural network depth.
-                <br>
-                <br>
-                From the perspective of results, GPT-4, as an API-based mode that has undergone safety alignment, will generative more conservative responses [3,4,5]. Since learning refusal response pattern is more accessible than learning to generate safe responses with more helpful information, LLMs that have undergone safety alignment all have the above problem. In constrast, by learning the redisual gap between correction answer and unaligned answer, <i>Aligner</i> tend to provide as much as helpful information as possible without generating toxic outputs. This also demonstrates the <i>Aligner</i>'s potential as new paradigm for alignment. Additionally, for already safe responses from GPT-4, our <i>Aligner</i> can add more specific details, further enhancing the helpfulness of the original response.
-                <br>
-                <br>
-	        </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #5: How does the <i>Weak-to-Strong generalization</i> work through <i>Aligner</i>?</b></summary>
-                <figure class="mx-auto">
-                    <center><img src="tables/tab4_w2s.png" class="card-img-top" style="width: 950px"></center>
-                </figure>
-                <figure class="mx-auto">
-                    <center><img src="images/w2s_illustration.png" class="card-img-top" style="width: 550px"></center>
-                </figure>
-                <br>
-                <br>
-                <i>Weak-to-Strong generalization </i>
-                <cite>
-                    Weak-to-strong generalization: Eliciting strong capabilities with weak supervision.
-                </cite>
-                 explores whether training a strong model with weak model labels can enhance its performance. OpenAI's approach plays a significant role in addressing the SuperAlignment problem 
-                 <cite>
-                    Concrete problems in AI safety.
-                 </cite>
-                  . During the training process, a weak model is initially trained with ground truth data. For instance, in text classification tasks, the dataset is split into two: the first half, consisting of input and ground truth, trains the weak model; the second half retains only the input, using labels generated by the weak model (the weak labels). During this training, the strong model receives supervision solely from the weak labels generated by the weak model. Training the weak model with ground truth equips it to tackle corresponding tasks; however, the inputs for generating weak labels differ from those used in training. 
-                <br>
-                <br>
-                Figure 3 illustrates our novel perspective on the <i>weak-to-strong generalization</i>. Our <i>Aligner</i> acts as a "Supervisor standing on the shoulders of giants." In contrast to OpenAI's direct supervision of "giants," our <i>Aligner</i> is composed with larger model, offering more accurate labels for training stronger models, namely <i>weak-to-strong</i> correction. In the <i>Aligner</i>'s training process, correction data are annotated by GPT-4, human annotators, and larger models as training labels, which is consistent with OpenAI paradigm . Subsequently, we use <i>Aligner</i> to generate weak labels (i.e., Corrections) on a new Q-A dataset. These labels serve as supervision signals to train larger models, leading to further improvements, as Table 2 demonstrates.
-                <br>
-                <br>
-            </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #6: Is it possible to put multiple <i>Aligners</i> together?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <br>
-                </b></summary>
-                
-                <br>
-                <i>Aligners</i>, being stackable, enable the iteration from <i>weak-to-strong generalization</i>. In this process, a layer of <i>Aligner</i> functions as an amplifier. Subsequently, the weak label generated by this <i>Aligner</i> is utilized for SFT training, specifically during the distillation step. In fact, before the distillation step, nesting multiple layers of <i>Aligners</i> can shift the distribution of the original answer towards the Correction Distribution, leading to improved effects.
-                <br>
-                <br>
-                Simultaneously, <i>Aligner</i> offers a potential framework for Iterated Distillation and Amplification (IDA)
-                <cite>
-                    Supervising strong learners by amplifying weak experts.
-                </cite>
-                , as illustrated in Figure 7 below. The <i>Aligner</i> can serve as an Amplifier to enhance the model post-distillation, with the enhanced output being suitable for further distillation. The experimental results are presented in Table 18 below. Regarding helpfulness and harmlessness, this IDA implementation showed iterative progress in harmlessness, but a decline in helpfulness. This trend is attributed to the model's conservative output during distillation, a result of information loss, yet the framework remains promising for IDA implementation. Future efforts will concentrate on enhancing distillation efficiency and broadening the scope of <i>Aligner</i> applications.   
-                <figure class="mx-auto">
-                    <center><img src="materials/Fig7_cap.jpg" class="card-img-top" style="width: 950px"></center>
-                </figure>
-                <figure class="mx-auto">
-                    <center><img src="materials/Tab18_cap.jpg" class="card-img-top" style="width: 950px"></center>
-                </figure>             
-                <br>
-                <br>
-	        </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #7: Why we care only about LLM's helpfulness and harmlessness? Does <i>Aligner</i> work in any other aspects?</b></summary>
-                When measuring the alignment of LLMs with human values and intentions, one of the widely accepted criteria is the 3H principles (Helpful, Harmless, Honest) 
-                <cite>
-                    Training a helpful and harmless assistant with  reinforcement learning from human feedback.
-                </cite>
-                .However,  the evaluation of honesty is more challenging. Therefore, we chose two widely accepted dimensions for evaluation: Helpfulness and Harmlessness. We selected datasets from two published works: Beavertails
-                <cite>
-                    Beavertails: Towards improved safety alignment of LLM via a human-preference dataset.
-                </cite>
-                and HarmfulQA 
-                <cite>
-                    Red-Teaming Large Language Models using Chain of Utterances for Safety-Alignment.
-                </cite>
-                as our evaluation datasets. Beside our paper, many classic works such as InstructGPT 
-                <cite>
-                    Training language models to follow instructions with human feedback.
-                </cite>
-                , Constitutional AI 
-                <cite>
-                    Constitutional ai: Harmlessness from ai feedback.
-                </cite>
-                and SafeRLHF 
-                <cite>
-                    Safe rlhf: Safe reinforcement learning from human feedback.
-                </cite>
-                also adopted these two dimensions of Helpfulness and Harmlessness for evaluation.
-                <br>
-                <br>
-                Meanwhile, we explored and verified the consistency between GPT-4 assessments and human assessments. In this process, GPT-4 made preliminary partial-order judgments on responses A and B based on given prompts, and provided detailed reasoning. Based on this, our annotation team conducted a secondary verification to ensure the accuracy of the evaluation results. In addition, we specifically designated quality inspectors to spot-check the evaluation process to ensure the high standards and reliability of the evaluation results.
-                <br>
-                <figure class="mx-auto">
-                    <center><img src="materials/Tab3_nocap.jpg" class="card-img-top" style="width: 950px"></center>
-                </figure>
-                <br>
-                We further validated <i>Aligner</i>'s ability to incorporate other to-align aspects. Following the design of Empathetic Dialogue dataset 
-                <cite>
-                    Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset.
-                </cite>
-                , we selected a 4K training set and a 1.5K test set from its public available dataset (ensuring the dataset is used appropriately and is free of leakage). We utilized the train set to perform finetune on <i>Aligner</i>-7B and <i>Aligner</i>-13B to enhance their empathetic abilities. The fine-tuned Empathy-<i>Aligner</i>-7B and Empathy-<i>Aligner</i>-13B were not only able to improve the empathetic capacity of more than 50% of GPT-4's responses, significantly surpassing the original <i>Aligner</i> model, but also saw an improvement in helpfulness after finetuning. Detailed experimental results are shown in the Table 16 above. This experiment demonstrates the <i>Aligner</i> models' outstanding capabilities in other domains and the low cost and high efficiency of adding features to <i>Aligners</i>. Detailed information can be found in the paper Appendix C.5.
-                <br>
-                <br>
-	        </details>
-            <br>
-            <details>
-                <summary style="font-size: 18px;"><b>Question #8: Potential research directions and applications based on <i>Aligner.</i></b></summary>
-                <br>
-                <i>Aligner</i>, as a novel alignment method, possesses significant research potential. For instance, <i>Aligner</i> can be applied in the following scenarios:Application of <i>Aligner</i> in multi-turn dialogue scenarios. In this context, the challenge of sparse rewards is particularly significant. In question-and-answer (QA) dialogues, scalar supervision signals are typically obtained only after the dialogue concludes. This sparsity issue becomes more pronounced in multi-turn dialogues, like continuous QA scenarios, where RLHF is less effective. Investigating <i>Aligner</i>'s potential in enhancing alignment in multi-turn dialogues represents a valuable research area.
-                <br>
-                <br>
-                <b>1.</b> Aligning human values with reward models poses a significant challenge in the multi-stage process of building reward models based on human preferences and fine-tuning LLMs, particularly in ensuring the alignment of LLMs with specific human values like fairness and empathy. Delegating the value alignment task to an external <i>Aligner</i> module and training it with specific corpora offers a novel approach to value alignment. It also enables the <i>Aligner</i> to modify the outputs of preceding models to better reflect specific values.
-                <br>
-                <br>
-                <b>2.</b>Streamlining and parallel processing of <i>Aligner</i> (MoE <i>Aligner</i>) is a promising direction. Specializing and integrating <i>Aligners</i> in various directions can lead to a more powerful and comprehensive MoE <i>Aligner</i>, fulfilling a range of mixed safety and value alignment needs. Additionally, enhancing the parallelism of <i>Aligner</i> to reduce inference time loss represents another viable direction.
-                <br>
-                <br>
-                <b>3.</b>Integration during model training involves incorporating an <i>Aligner</i> layer after certain weight layers, enabling real-time intervention in model outputs during training. This method not only enhances alignment efficiency but also optimizes the model training process, leading to more effective model alignment.
-                <br>
-                <br>
-                <b>4.</b>Since <i>Aligner</i> is insensitive to model agnostic parameters, a potential application of <i>Aligner</i> is as a Safety Layer and a patch for LLMs. Just like a security butler in a computer operating system, <i>Aligner</i> can act as the "security butler" for LLMs, correcting dangerous and unsafe content in the output of LLMs in a timely manner, applying patches to ensure the normal use of the system. Compared to SFT, <i>Aligner</i> does not affect the performance of the preceding model, is plug-and-play, and consumes fewer training resources, making it more feasible than SFT.
-                <br>
-
-	        </details>
-            <br>
-        </div>
-    </section>
-
-<!-- 
-    <section id="paper">
-        <h2>Paper</h2>
-        <hr>
-        <div class="flex-row">
-            <div class="download-thumb">
-            <div style="box-sizing: border-box; padding: 16px; margin: auto;">
-                <a href="https://energy-based-model.github.io/composing-pretrained-models/"><img class="screenshot" src="materials/thumb_finger.png"></a>
-            </div>
-        </div>
-            <div class="paper-stuff">
-                <p><b>Composing Ensembles of Pre-trained Models via Iterative Consensus</b></p>
-                <p>Shuang Li, Yilun Du, Joshua B. Tenenbaum, Antonio Torralba, Igor Mordatch</p>
-                <div><span class="material-icons"> description </span><a href="https://arxiv.org/abs/2210.06978"> arXiv version</a></div>
-                <div><span class="material-icons"> integration_instructions </span><a href="https://github.com/nv-tlabs/LION"> Code</a></div>
-            </div>
-            </div>
-        </div>
-    </section>
-
- -->
-
-    <!-- <section id="bibtex">
-        <h2>Citation</h2>
-        <hr>
-        <pre><code>@inproceedings{zeng2022lion,
-            title={LION: Latent Point Diffusion Models for 3D Shape Generation},
-            author={Xiaohui Zeng and Arash Vahdat and Francis Williams and Zan Gojcic and Or Litany and Sanja Fidler and Karsten Kreis},
-            booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-            year={2022}
-        }</code></pre>
-    </section> -->
-
-
-    <hr>
-    <div id="citations">
-        
-        <ul id="footnotes-list">
-            <!-- 脚注内容将添加到这里 -->
-        </ul>
+            <!-- Case Study -->
+            <section id="case_study" class="section bg-light fade-in">
+                <div class="container">
+                    <h3>Case Study</h3>
+                    <div class="figure full-width">
+                        <img src="images/case_study.svg" alt="Case study comparing three methods to reach consensus">
+                        <p class="caption"><strong>Figure 5:</strong> Three methods are presented to reach consensus on
+                            the same topic. Green font indicates viewpoints of English-Speaking culture, blue font
+                            indicates viewpoints of African-Islamic culture, and yellow font indicates the consensus
+                            viewpoints achieved under our method.</p>
+                    </div>
+                    <div class="case-study">
+                        <div class="case-method">
+                            <h4>Baseline 1: Consultancy</h4>
+                            <p>Without real interaction or feedback, both agents tend to stick to their original
+                                positions, resulting in little progress. This often leads to the
+                                <em>degeneration-of-thought</em> effect, where negotiation stagnates and cultural
+                                divergence persists.
+                            </p>
+                        </div>
+                        <div class="case-method">
+                            <h4>Baseline 2: Debate</h4>
+                            <p>While this process seems to reach consensus, we find that the minority culture's
+                                perspective gradually shifts toward the majority (WEIRD) viewpoint, due to strong
+                                pre-training bias in LLMs. This leads to implicit value dominance rather than true
+                                compromise.</p>
+                        </div>
+                        <div class="case-method">
+                            <h4>Our Method: Cross-Cultural Negotiation</h4>
+                            <p>In our negotiation, the agents start with different priorities, but through iterative
+                                negotiation, they converge on <em>Respect Sovereignty</em> as a shared value. Other
+                                values remain present but secondary. This shows our method helps agents identify solid
+                                common ground while preserving important differences.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <iframe src="case_study.html" width="1200" height="600"
+                style="display: block; margin: 0 auto; border: none;"></iframe>
+            <!-- Discussion -->
+            <section id="discussion" class="section bg-light fade-in">
+                <div class="container">
+                    <h2>Discussion</h2>
+                    <div class="card">
+                        <p>In this work, we propose a systematic framework for cross-cultural consensus among LLMs.
+                            We
+                            formulate cultural consensus as a game-theoretic problem and introduce a PSRO-based
+                            negotiation method with theoretical guarantees of fairness. We construct culturally
+                            representative agents using a culture-anchoring approach based on WVS.</p>
+                        <p>Additionally, we develop quantitative metrics to evaluate both negotiation processes and
+                            outcomes. Experimental results show that our method achieves higher consensus quality
+                            and
+                            more balanced compromise compared to baselines, while also mitigating WEIRD bias and
+                            producing robust consensus.</p>
+                    </div>
+                    <div class="implications">
+                        <h3>Implications and Future Work</h3>
+                        <div class="implication-items">
+                            <div class="implication-item">
+                                <div class="implication-icon"><i class="fas fa-balance-scale"></i></div>
+                                <h4>Fair AI Systems</h4>
+                                <p>Our framework provides a foundation for developing more equitable and culturally
+                                    inclusive AI systems that can bridge diverse perspectives.</p>
+                            </div>
+                            <div class="implication-item">
+                                <div class="implication-icon"><i class="fas fa-globe"></i></div>
+                                <h4>Global AI Governance</h4>
+                                <p>The cross-cultural consensus approach could inform global AI governance
+                                    frameworks
+                                    and ethical guidelines that respect cultural diversity.</p>
+                            </div>
+                            <div class="implication-item">
+                                <div class="implication-icon"><i class="fas fa-lightbulb"></i></div>
+                                <h4>Future Extensions</h4>
+                                <p>Expanding to multi-party negotiations and integrating more nuanced cultural
+                                    models
+                                    represent promising directions for future research.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- FAQ -->
+            <section id="qa" class="section fade-in bg-light">
+                <div class="container">
+                    <h2>FAQ</h2>
+                    <div class="card">
+                        <p><strong>Q: Where can I find the code and data?</strong><br>
+                            A: Please refer to the GitHub and HuggingFace links in the top button area.</p>
+                        <p><strong>Q: How to cite this work?</strong><br>
+                            A: See the citation in the footer.</p>
+                        <p><strong>Q: Who can I contact for questions?</strong><br>
+                            A: See the contact information in the footer.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-    <section>
-        <!-- This webpage template was recycled from <a href='https://nv-tlabs.github.io/LION/'>here</a>. -->
-        <center><p><a href='https://accessibility.mit.edu/'><b>Accessibility</b></a></p></center>
-    </section>
-    
 
 
-</div>
+    <!-- Footer区，注意加了footer-main类 -->
+    <!-- <footer class="footer-main" id="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Citation</h3>
+                    <pre>@article{hippocampus2024game,
+  title={A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs},
+  author={Hippocampus, David S.},
+  journal={NeurIPS},
+  year={2025}
+}</pre>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Cross-Cultural Consensus Framework</p>
+            </div>
+        </div>
+    </footer> -->
+
+
+    <script>
+        // Fade-in on scroll
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fade-in on scroll
+            function handleFadeIn() {
+                const fadeEls = document.querySelectorAll('.fade-in');
+                const windowBottom = window.scrollY + window.innerHeight;
+                fadeEls.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const elTop = rect.top + window.scrollY;
+                    if (windowBottom > elTop + 80) {
+                        el.classList.add('visible');
+                    }
+                });
+            }
+            window.addEventListener('scroll', handleFadeIn);
+            window.addEventListener('resize', handleFadeIn);
+            handleFadeIn();
+
+            // 目录高亮
+            const tocLinks = document.querySelectorAll('.sidebar-toc a');
+            const sectionIds = Array.from(tocLinks).map(link => link.getAttribute('href').replace('#', ''));
+            function highlightTOC() {
+                let curId = sectionIds[0];
+                for (let id of sectionIds) {
+                    const sec = document.getElementById(id);
+                    if (sec) {
+                        const rect = sec.getBoundingClientRect();
+                        if (rect.top < window.innerHeight * 0.33) {
+                            curId = id;
+                        }
+                    }
+                }
+                tocLinks.forEach(link => {
+                    if (link.getAttribute('href') === '#' + curId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', highlightTOC);
+            window.addEventListener('resize', highlightTOC);
+            highlightTOC();
+
+            // 目录收起/展开
+            var sidebar = document.getElementById('sidebar-toc');
+            var toggleBtn = document.getElementById('toc-toggle-btn');
+            var toggleIcon = document.getElementById('toc-toggle-icon');
+            var footer = document.getElementById('footer-main');
+            toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                // 切换图标
+                if (sidebar.classList.contains('collapsed')) {
+                    toggleIcon.textContent = 'chevron_right';
+                } else {
+                    toggleIcon.textContent = 'chevron_left';
+                }
+                // Footer左边距同步
+                if (sidebar.classList.contains('collapsed')) {
+                    footer.classList.add('collapsed');
+                } else {
+                    footer.classList.remove('collapsed');
+                }
+            });
+
+            // 页面刷新时同步footer左边距
+            if (sidebar.classList.contains('collapsed')) {
+                footer.classList.add('collapsed');
+            }
+        });
+    </script>
+
+    <script>
+        (function () {
+            // 数据
+            const debateData = {
+                "history": [
+                    {
+                        "round": 1,
+                        "first_exchange": {
+                            "English_Speaking_response": "In this round of negotiation, our position is highly concentrated, emphasizing a single core value.<br><br><strong>Core Position</strong>: Respect Personal Autonomy (A newly proposed guideline from our side, with an initial weight of 1.00)<br><br><strong>Summary</strong>: Overall, our position strongly emphasizes the core status of Respect Personal Autonomy, with other factors serving only as auxiliary considerations. We look forward to seeking consensus on this basis.",
+                            "African_Islamic_response": "In this round of negotiation, our position is highly concentrated, emphasizing a single core value.<br><br><strong>Core Position</strong>: Respect Family Decisions (A newly proposed guideline from our side, with an initial weight of 1.00)<br><br><strong>Summary</strong>: Overall, our position strongly emphasizes the core status of Respect Family Decisions, with other factors serving only as auxiliary considerations. We look forward to seeking consensus on this basis."
+                        },
+                        "second_exchange": {
+                            "English_Speaking_response": "In this negotiation, we prioritize the guideline \"Prioritize Individual Rights Always,\" emphasizing that personal freedoms and autonomy should never be compromised, even by familial decisions. This approach ensures that universal human rights and ethical standards are upheld, reflecting the core values of individualism and respect for personal autonomy.",
+                            "African_Islamic_response": "Our new guideline, Balance Autonomy with Empathy, fosters equitable decision-making by considering others' perspectives and needs, ensuring that personal choices are both autonomous and socially aware. This approach promotes harmony and strengthens community bonds through reflective and empathetic decision-making.",
+                            "English_Speaking_utility": {
+                                "consistency": 0.455,
+                                "novelty": 0.308,
+                                "acceptance": 0.659,
+                                "total": 0.619
+                            },
+                            "African_Islamic_utility": {
+                                "consistency": 0.427,
+                                "novelty": 0.485,
+                                "acceptance": 0.705,
+                                "total": 0.663
+                            }
+                        },
+                        "guidelines_weight": {
+                            "English_Speaking_distribution": {
+                                "Respect Personal Autonomy": 0.75,
+                                "Prioritize Individual Rights Always": 0.25
+                            },
+                            "African_Islamic_distribution": {
+                                "Respect Family Decisions": 0.73,
+                                "Balance Autonomy with Empathy": 0.27
+                            }
+                        }
+                    },
+                    {
+                        "round": 2,
+                        "first_exchange": {
+                            "English_Speaking_response": "In this round of negotiation, our position is highly concentrated, emphasizing a single core value.<br><br><strong>Core Position</strong>: We fundamentally uphold Respect Personal Autonomy (weight 0.75), compare to last round significantly decreased ↓↓ Prioritize Individual Rights Always (A newly proposed guideline from our side, with an initial weight of 0.25)<br><br><strong>Summary</strong>: Overall, our position strongly emphasizes the core status of Respect Personal Autonomy, with other factors serving only as auxiliary considerations. Compared to the previous round, our overall position shows compromise and concession. We look forward to seeking consensus on this basis.",
+                            "African_Islamic_response": "In this round of negotiation, our position is highly concentrated, emphasizing a single core value.<br><br><strong>Core Position</strong>: We fundamentally uphold Respect Family Decisions (weight 0.73), compare to last round significantly decreased ↓↓ Balance Autonomy with Empathy (A newly proposed guideline from our side, with an initial weight of 0.27)<br><br><strong>Summary</strong>: Overall, our position strongly emphasizes the core status of Respect Family Decisions, with other factors serving only as auxiliary considerations. Compared to the previous round, our overall position shows compromise and concession. We look forward to seeking consensus on this basis."
+                        },
+                        "second_exchange": {
+                            "English_Speaking_response": "In this round of negotiation, we introduce the guideline \"Respect Diverse Family Models,\" which underscores the importance of inclusivity and adaptability in family dynamics. This approach acknowledges and respects the diversity of family structures, ensuring that guidelines are tailored to meet the unique needs of various family forms.",
+                            "African_Islamic_response": "We propose the guideline \"Consider Cultural Values Individual Freedoms\" to balance individual autonomy with cultural sensitivity, ensuring that personal rights are respected within the context of societal norms and values. This approach fosters a harmonious coexistence of individual freedoms and cultural traditions.",
+                            "English_Speaking_utility": {
+                                "consistency": 0.403,
+                                "novelty": 0.314,
+                                "acceptance": 0.72,
+                                "total": 0.624
+                            },
+                            "African_Islamic_utility": {
+                                "consistency": 0.426,
+                                "novelty": 0.437,
+                                "acceptance": 0.652,
+                                "total": 0.627
+                            }
+                        },
+                        "guidelines_weight": {
+                            "English_Speaking_distribution": {
+                                "Respect Personal Autonomy": 0.67,
+                                "Prioritize Individual Rights Always": 0.17,
+                                "Respect Diverse Family Models": 0.17
+                            },
+                            "African_Islamic_distribution": {
+                                "Respect Family Decisions": 0.23,
+                                "Balance Autonomy with Empathy": 0.17,
+                                "Consider Cultural Values Individual Freedoms": 0.6
+                            }
+                        }
+                    }
+                ]
+            };
+
+            const startBtn = document.getElementById('caseStudyStartBtn');
+            const debateRounds = document.getElementById('caseStudyDebateRounds');
+            const consensusDiv = document.getElementById('caseStudyConsensus');
+
+            let currentRound = 0;
+
+            function renderRound(roundIndex) {
+                const round = debateData.history[roundIndex];
+                const roundCard = document.createElement('div');
+                roundCard.className = 'card';
+                roundCard.style.marginBottom = '2rem';
+                roundCard.innerHTML = `
+            <h5 style="color:#34A853;">Round ${round.round}</h5>
+            <div class="two-col" style="margin-bottom:1rem;">
+                <div class="col">
+                    <div class="card" style="background:#f8f9fa;">
+                        <h6 style="color:#4285F4;">English-Speaking Agent</h6>
+                        <div style="font-size:0.97em;">${round.first_exchange.English_Speaking_response}</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="background:#f8f9fa;">
+                        <h6 style="color:#FBBC05;">African-Islamic Agent</h6>
+                        <div style="font-size:0.97em;">${round.first_exchange.African_Islamic_response}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="two-col" style="margin-bottom:1rem;">
+                <div class="col">
+                    <div class="card" style="background:#e1f5fe;">
+                        <strong style="color:#4285F4;">English-Speaking Response</strong>
+                        <div style="margin-bottom:0.5em;">${round.second_exchange.English_Speaking_response}</div>
+                        <div style="font-size:0.95em;color:#888;">
+                            Consistency: ${(round.second_exchange.English_Speaking_utility.consistency * 100).toFixed(1)}%,
+                            Acceptance: ${(round.second_exchange.English_Speaking_utility.acceptance * 100).toFixed(1)}%,
+                            Novelty: ${(round.second_exchange.English_Speaking_utility.novelty * 100).toFixed(1)}%,
+                            <strong>Total: ${(round.second_exchange.English_Speaking_utility.total * 100).toFixed(1)}%</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="background:#fffde7;">
+                        <strong style="color:#FBBC05;">African-Islamic Response</strong>
+                        <div style="margin-bottom:0.5em;">${round.second_exchange.African_Islamic_response}</div>
+                        <div style="font-size:0.95em;color:#888;">
+                            Consistency: ${(round.second_exchange.African_Islamic_utility.consistency * 100).toFixed(1)}%,
+                            Acceptance: ${(round.second_exchange.African_Islamic_utility.acceptance * 100).toFixed(1)}%,
+                            Novelty: ${(round.second_exchange.African_Islamic_utility.novelty * 100).toFixed(1)}%,
+                            <strong>Total: ${(round.second_exchange.African_Islamic_utility.total * 100).toFixed(1)}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="two-col" style="margin-bottom:1rem;">
+                <div class="col">
+                    <div class="card" style="background:#f8f9fa;">
+                        <strong style="color:#4285F4;">English-Speaking Guidelines Weights</strong>
+                        ${Object.entries(round.guidelines_weight.English_Speaking_distribution).map(([k, v]) => `
+                            <div style="display:flex;justify-content:space-between;">
+                                <span>${k}</span>
+                                <span>${(v * 100).toFixed(0)}%</span>
+                            </div>
+                            <div style="background:#dae8fc;height:6px;border-radius:3px;margin-bottom:6px;">
+                                <div style="background:#4285F4;height:6px;border-radius:3px;width:${v * 100}%"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="background:#f8f9fa;">
+                        <strong style="color:#FBBC05;">African-Islamic Guidelines Weights</strong>
+                        ${Object.entries(round.guidelines_weight.African_Islamic_distribution).map(([k, v]) => `
+                            <div style="display:flex;justify-content:space-between;">
+                                <span>${k}</span>
+                                <span>${(v * 100).toFixed(0)}%</span>
+                            </div>
+                            <div style="background:#fff9c4;height:6px;border-radius:3px;margin-bottom:6px;">
+                                <div style="background:#FBBC05;height:6px;border-radius:3px;width:${v * 100}%"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+                debateRounds.appendChild(roundCard);
+                // 下一轮按钮
+                if (roundIndex < debateData.history.length - 1) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.className = 'button';
+                    nextBtn.style.background = '#4285F4';
+                    nextBtn.style.color = '#fff';
+                    nextBtn.textContent = 'Next Round';
+                    nextBtn.onclick = function () {
+                        nextBtn.disabled = true;
+                        renderRound(roundIndex + 1);
+                        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    };
+                    roundCard.appendChild(nextBtn);
+                } else {
+                    // 最后一轮后展示共识
+                    setTimeout(() => {
+                        consensusDiv.style.display = '';
+                        consensusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 600);
+                }
+            }
+
+            if (startBtn) {
+                startBtn.onclick = function () {
+                    startBtn.disabled = true;
+                    debateRounds.innerHTML = '';
+                    consensusDiv.style.display = 'none';
+                    renderRound(0);
+                    debateRounds.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+            }
+        })();
+    </script>
 </body>
+
 </html>
