@@ -15,6 +15,9 @@
         rel="stylesheet">
     <link rel="shortcut icon" href="images/favicon.svg" type="image/svg">
     <script src="https://kit.fontawesome.com/a0c5198962.js" crossorigin="anonymous"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
     <style>
         :root {
             --primary-color: #4285F4;
@@ -830,18 +833,40 @@
                         </div>
                         <h3>Formalization</h3>
                         <p>We model the cultural negotiation process as a two-player extensive-form game,
-                            represented by the quintuple: Γ ≐ ⟨𝓘, 𝓖, 𝓦, 𝓤, 𝓗⟩, where:</p>
+                            represented by the quintuple: \( \Gamma \doteq \langle \mathcal{I}, \mathcal{G}, \mathcal{W}, \mathcal{U}, \mathcal{H} \rangle \), where:</p>
                         <ul>
-                            <li><strong>Cultural Entities:</strong> 𝓘 ≐ {A, B}, the set of two distinct cultural
-                                entities involved in the negotiation.</li>
-                            <li><strong>Guideline Sets:</strong> 𝓖 ≐ {Gi | i ∈ 𝓘}, each guideline g ∈ Gi is
-                                structured as a triple g = ⟨content, reason, description⟩.</li>
-                            <li><strong>Guideline Weights:</strong> 𝓦 ≐ {Wi | i ∈ 𝓘}, for each culture i ∈ 𝓘, Wi
-                                ∈ Δ(Gi) denotes a probability distribution over its guidelines.</li>
-                            <li><strong>Utility Functions:</strong> 𝓤 ≐ {Ui | i ∈ 𝓘}, quantify the utility each
-                                culture derives from different guideline combinations.</li>
-                            <li><strong>Negotiation History:</strong> 𝓗, the sequence of utterances and proposals
-                                exchanged in negotiation.</li>
+                            <li>
+                                <b>Cultural Entities:</b>
+                                \( \mathcal{I} \doteq \{A, B\} \), the set of two distinct cultural entities involved in
+                                the negotiation, where
+                                \( A \) and \( B \) represent different cultures with their own values and perspectives.
+                            </li>
+                            <li>
+                                <b>Guideline Sets:</b>
+                                \( \mathcal{G} \doteq \{G_i \mid i \in \mathcal{I}\} \),
+                                each guideline \( g \in G_i \) is structured as a triple
+                                \( g = \langle \text{content}, \text{reason}, \text{description} \rangle \),
+                                capturing the natural language specification of core cultural imperatives on specific
+                                topics.
+                            </li>
+                            <li>
+                                <b>Guideline Weights:</b>
+                                \( \mathcal{W} \doteq \{W_i \mid i \in \mathcal{I}\} \),
+                                for each culture \( i \in \mathcal{I} \),
+                                \( W_i \in \Delta(G_i) \) denotes a probability distribution over its guidelines, with
+                                \( \sum_g w_i(g) = 1 \).
+                                \( W_i \) thus characterizes the expressive emphasis of culture \( i \) in the current
+                                negotiation round.
+                            </li>
+                            <li>
+                                <b>Utility Functions:</b>
+                                \( \mathcal{U} \doteq \{U_i \mid i \in \mathcal{I}\} \),
+                                quantify the utility each culture derives from different guideline combinations.
+                            </li>
+                            <li>
+                                <b>Negotiation History:</b>
+                                \( \mathcal{H} \), the sequence of utterances and proposals exchanged in negotiation.
+                            </li>
                         </ul>
                     </div>
                     <h3>Utility</h3>
@@ -930,7 +955,7 @@
                             <ol>
                                 <li><strong>Inglehart-Welzel Cultural Map</strong> - We prompt the model with
                                     representative WVS questions and locate its aggregated answers on the map.</li>
-                                <li><strong>Hofstede dimensions</strong> - Developed through comparative analysis of
+                                <li><strong>Hofstede Dimensions</strong> - Developed through comparative analysis of
                                     matched country samples using the Values Survey Module (VSM).</li>
                             </ol>
                         </div>
