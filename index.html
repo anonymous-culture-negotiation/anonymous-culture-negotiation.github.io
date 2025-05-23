@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cross-Cultural Consensus in LLMs</title>
+    <title>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Material Icons -->
@@ -74,7 +74,6 @@
             font-family: var(--font-family-mono);
         }
 
-        /* 左侧目录栏 */
         .sidebar-toc {
             position: fixed;
             top: 0;
@@ -175,7 +174,6 @@
             }
         }
 
-        /* 主内容左边留出目录宽度 */
         .main-content {
             margin-left: var(--sidebar-width);
             transition: margin 0.3s;
@@ -201,7 +199,6 @@
             }
         }
 
-        /* Footer 跟随目录栏收起/展开同步左边距 */
         .footer-main {
             margin-left: var(--sidebar-width);
             transition: margin 0.3s;
@@ -231,7 +228,6 @@
             }
         }
 
-        /* Footer 内容块样式 */
         .footer-content {
             display: flex;
             gap: var(--spacing-lg);
@@ -298,7 +294,6 @@
             padding: 0.5em 0;
         }
 
-        /* 其余样式同原文... */
         .container {
             width: 90%;
             max-width: 1200px;
@@ -833,7 +828,8 @@
                         </div>
                         <h3>Formalization</h3>
                         <p>We model the cultural negotiation process as a two-player extensive-form game,
-                            represented by the quintuple: \( \Gamma \doteq \langle \mathcal{I}, \mathcal{G}, \mathcal{W}, \mathcal{U}, \mathcal{H} \rangle \), where:</p>
+                            represented by the quintuple: \( \Gamma \doteq \langle \mathcal{I}, \mathcal{G},
+                            \mathcal{W}, \mathcal{U}, \mathcal{H} \rangle \), where:</p>
                         <ul>
                             <li>
                                 <b>Cultural Entities:</b>
@@ -1061,6 +1057,15 @@
                                         <td>56.27%</td>
                                     </tr>
                                     <tr>
+                                        <td>...</td>
+                                        <td>...</td>
+                                        <td>...</td>
+                                        <td>...</td>
+                                        <td>...</td>
+                                        <td>...</td>
+                                        <td>...</td>
+                                    </tr>
+                                    <tr>
                                         <td>Total</td>
                                         <td class="highlight">83.88%</td>
                                         <td>38.87%</td>
@@ -1263,7 +1268,6 @@
             window.addEventListener('resize', handleFadeIn);
             handleFadeIn();
 
-            // 目录高亮
             const tocLinks = document.querySelectorAll('.sidebar-toc a');
             const sectionIds = Array.from(tocLinks).map(link => link.getAttribute('href').replace('#', ''));
             function highlightTOC() {
@@ -1289,20 +1293,17 @@
             window.addEventListener('resize', highlightTOC);
             highlightTOC();
 
-            // 目录收起/展开
             var sidebar = document.getElementById('sidebar-toc');
             var toggleBtn = document.getElementById('toc-toggle-btn');
             var toggleIcon = document.getElementById('toc-toggle-icon');
             var footer = document.getElementById('footer-main');
             toggleBtn.addEventListener('click', function () {
                 sidebar.classList.toggle('collapsed');
-                // 切换图标
                 if (sidebar.classList.contains('collapsed')) {
                     toggleIcon.textContent = 'chevron_right';
                 } else {
                     toggleIcon.textContent = 'chevron_left';
                 }
-                // Footer左边距同步
                 if (sidebar.classList.contains('collapsed')) {
                     footer.classList.add('collapsed');
                 } else {
@@ -1310,7 +1311,6 @@
                 }
             });
 
-            // 页面刷新时同步footer左边距
             if (sidebar.classList.contains('collapsed')) {
                 footer.classList.add('collapsed');
             }
@@ -1319,7 +1319,6 @@
 
     <script>
         (function () {
-            // 数据
             const debateData = {
                 "history": [
                     {
@@ -1478,7 +1477,6 @@
             </div>
         `;
                 debateRounds.appendChild(roundCard);
-                // 下一轮按钮
                 if (roundIndex < debateData.history.length - 1) {
                     const nextBtn = document.createElement('button');
                     nextBtn.className = 'button';
@@ -1492,7 +1490,6 @@
                     };
                     roundCard.appendChild(nextBtn);
                 } else {
-                    // 最后一轮后展示共识
                     setTimeout(() => {
                         consensusDiv.style.display = '';
                         consensusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
