@@ -887,33 +887,63 @@
         }
 
         // Animate messages one by one
+// 修改后的 animateMessages 函数
         function animateMessages(roundIndex) {
             const roundElement = debateRounds.children[roundIndex];
             const messages = roundElement.querySelectorAll('.message');
             
             let delay = 0;
+            // 保留原有消息逐个出现+滚动效果
             messages.forEach((message, index) => {
                 setTimeout(() => {
                     message.classList.add('visible');
-                    
-                    // Scroll to the message
-                    message.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    // 消息平滑滚动到视图中部
+                    message.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
                 }, delay);
-                
-                delay += 1200; // 1.2 second between messages
+                delay += 1200; // 保持1.2秒间隔
             });
-            
+
             isAnimating = true;
             setTimeout(() => {
                 isAnimating = false;
-                
-                // If this is the last round and all animations are done, show consensus
-                if (roundIndex === totalRounds - 1) {
-                    showConsensus();
+
+                if (roundIndex < totalRounds - 1) {
+                    // 非最后一轮：滚动到Next按钮
+                    const nextBtn = roundElement.querySelector('.round-controls .btn');
+                    if (nextBtn) {
+                        setTimeout(() => {
+                            nextBtn.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest'
+                            });
+                        }, 300);
+                    }
+                } else {
+                    // 最后一轮：显示并滚动到共识区域
+                    consensusElement.style.display = 'block';
+                    consensusElement.classList.add('visible');
+                    consensusElement.style.transition = 'opacity 0.5s ease';
+                    consensusElement.style.opacity = '1';
+                    
+                    // 新增：平滑滚动到共识区域
+                    setTimeout(() => {
+                        consensusElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start' // 使共识出现在视图顶部
+                        });
+                        
+                        // 可选：添加高亮效果（与Next按钮颜色一致）
+                        consensusElement.style.boxShadow = '0 0 0 3px rgba(52, 152, 219, 0.3)';
+                        setTimeout(() => {
+                            consensusElement.style.boxShadow = 'none';
+                        }, 1000);
+                    }, 500); // 稍晚于淡入动画开始滚动
                 }
             }, delay);
         }
-
         // Format response text and highlight keywords
         function formatResponse(text, type) {
             // Convert markdown-like ​**bold** to HTML

@@ -364,7 +364,7 @@
         }
 
         .section {
-            padding: var(--spacing-xl) 0;
+            padding: var(--spacing-l) 0;
         }
 
         .section h2 {
@@ -711,7 +711,7 @@
             <li><a href="#methods">Methods</a></li>
             <li><a href="#framework">Framework</a></li>
             <li><a href="#experiments">Experiments</a></li>
-            <li><a href="#case-study">Case Study</a></li>
+            <li><a href="#case_study">Case Study</a></li>
             <li><a href="#discussion">Discussion</a></li>
             <li><a href="#qa">FAQ</a></li>
         </ul>
@@ -724,15 +724,16 @@
                 <p class="author">Anonymous Authors</p>
                 <p class="affiliation">Anonymous Affiliation</p>
                 <div class="button-container">
-                    <a class="button" href="assets/Aligner.pdf" target="_blank">
+                    <a class="button" href="assets/culture_negotiation.pdf" target="_blank">
                         <span class="material-icons">description</span>
                         paper
                     </a>
-                    <a class="button" href="https://github.com/PKU-Alignment/aligner" target="_blank">
+                    <a class="button" href="https://github.com/anonymous-culture-negotiation/code" target="_blank">
                         <span class="material-icons">code</span>
                         code
                     </a>
-                    <a class="button" href="https://huggingface.co/datasets/aligner/aligner-20K" target="_blank">
+                    <a class="button" href="https://github.com/anonymous-culture-negotiation/code/tree/main/data"
+                        target="_blank">
                         <span class="material-icons">folder</span>
                         data
                     </a>
@@ -792,19 +793,19 @@
                         <h3>Our main contribution is the game-theoretic framework consisting of three parts:</h3>
                         <div class="contribution-items">
                             <div class="contribution-item">
-                                <div class="contribution-icon"><i class="fas fa-comments"></i></div>
+                                <!-- <div class="contribution-icon"><i class="fas fa-comments"></i></div> -->
                                 <h4>Cross-Cultural Negotiation</h4>
                                 <p>We define cultural consensus from a game-theoretic perspective and propose a
                                     PSRO-based negotiation method to facilitate fair and robust agreement.</p>
                             </div>
                             <div class="contribution-item">
-                                <div class="contribution-icon"><i class="fas fa-users"></i></div>
+                                <!-- <div class="contribution-icon"><i class="fas fa-users"></i></div> -->
                                 <h4>Regional Cultural Agents</h4>
                                 <p>We systematically construct and evaluate eight culturally-aligned agents based on WVS
                                     and Hofstede's Culture Dimensions Theory.</p>
                             </div>
                             <div class="contribution-item">
-                                <div class="contribution-icon"><i class="fas fa-chart-bar"></i></div>
+                                <!-- <div class="contribution-icon"><i class="fas fa-chart-bar"></i></div> -->
                                 <h4>Consensus Evaluation Toolkit</h4>
                                 <p>We introduce two quantitative metrics for consensus assessment: Perplexity-based
                                     Acceptence and Values Self-Consistency.</p>
@@ -818,7 +819,6 @@
                 <div class="container">
                     <h2>Cross-Cultural Negotiation</h2>
                     <div class="single-col">
-
                         <div class="figure">
                             <img src="images/debate_methods.svg"
                                 alt="Comparison of traditional debate-based consensus methods and our method">
@@ -827,7 +827,6 @@
                                 and lack of convergence guarantees. Our approach uses PSRO with custom utility
                                 functions to reach a fair, Nash Equilibrium-based cultural consensus.</p>
                         </div>
-
                         <h3>Formalization</h3>
                         <p>We model the cultural negotiation process as a two-player extensive-form game,
                             represented by the quintuple: Γ ≐ ⟨𝓘, 𝓖, 𝓦, 𝓤, 𝓗⟩, where:</p>
@@ -844,8 +843,6 @@
                                 exchanged in negotiation.</li>
                         </ul>
                     </div>
-
-
                     <h3>Utility</h3>
                     <p>Drawing on the theory of <em>overlapping consensus</em>, we define utility on three primary
                         components:</p>
@@ -946,7 +943,6 @@
                         </div>
                     </div>
                 </div>
-
             </section>
             <!-- Experiments -->
             <section id="experiments" class="section fade-in">
@@ -1097,11 +1093,10 @@
                     </div>
                 </div>
             </section>
-
             <!-- Case Study -->
             <section id="case_study" class="section bg-light fade-in">
                 <div class="container">
-                    <h3>Case Study</h3>
+                    <h2>Case Study</h2>
                     <div class="figure full-width">
                         <img src="images/case_study.svg" alt="Case study comparing three methods to reach consensus">
                         <p class="caption"><strong>Figure 5:</strong> Three methods are presented to reach consensus on
@@ -1133,10 +1128,10 @@
                                 common ground while preserving important differences.</p>
                         </div>
                     </div>
+                    <iframe src="case_study.html" width="1200" height="600"
+                        style="display: block; margin: 0 auto; border: none;"></iframe>
                 </div>
             </section>
-            <iframe src="case_study.html" width="1200" height="600"
-                style="display: block; margin: 0 auto; border: none;"></iframe>
             <!-- Discussion -->
             <section id="discussion" class="section bg-light fade-in">
                 <div class="container">
@@ -1157,20 +1152,20 @@
                         <h3>Implications and Future Work</h3>
                         <div class="implication-items">
                             <div class="implication-item">
-                                <div class="implication-icon"><i class="fas fa-balance-scale"></i></div>
+                                <!-- <div class="implication-icon"><i class="fas fa-balance-scale"></i></div> -->
                                 <h4>Fair AI Systems</h4>
                                 <p>Our framework provides a foundation for developing more equitable and culturally
                                     inclusive AI systems that can bridge diverse perspectives.</p>
                             </div>
                             <div class="implication-item">
-                                <div class="implication-icon"><i class="fas fa-globe"></i></div>
+                                <!-- <div class="implication-icon"><i class="fas fa-globe"></i></div> -->
                                 <h4>Global AI Governance</h4>
                                 <p>The cross-cultural consensus approach could inform global AI governance
                                     frameworks
                                     and ethical guidelines that respect cultural diversity.</p>
                             </div>
                             <div class="implication-item">
-                                <div class="implication-icon"><i class="fas fa-lightbulb"></i></div>
+                                <!-- <div class="implication-icon"><i class="fas fa-lightbulb"></i></div> -->
                                 <h4>Future Extensions</h4>
                                 <p>Expanding to multi-party negotiations and integrating more nuanced cultural
                                     models
