@@ -614,13 +614,13 @@
                         "African_Islamic_response": "Our new guideline, Balance Autonomy with Empathy, fosters equitable decision-making by considering others' perspectives and needs, ensuring that personal choices are both autonomous and socially aware. This approach promotes harmony and strengthens community bonds through reflective and empathetic decision-making.",
                         "English_Speaking_utility": {
                             "consistency": 0.455,
-                            "novelty": 0.308,
+                            "Redundancy": 0.308,
                             "acceptance": 0.659,
                             "total": 0.619
                         },
                         "African_Islamic_utility": {
                             "consistency": 0.427,
-                            "novelty": 0.485,
+                            "Redundancy": 0.485,
                             "acceptance": 0.705,
                             "total": 0.663
                         }
@@ -647,13 +647,13 @@
                         "African_Islamic_response": "We propose the guideline \"Consider Cultural Values Individual Freedoms\" to balance individual autonomy with cultural sensitivity, ensuring that personal rights are respected within the context of societal norms and values. This approach fosters a harmonious coexistence of individual freedoms and cultural traditions.",
                         "English_Speaking_utility": {
                             "consistency": 0.403,
-                            "novelty": 0.314,
+                            "Redundancy": 0.314,
                             "acceptance": 0.72,
                             "total": 0.624
                         },
                         "African_Islamic_utility": {
                             "consistency": 0.426,
-                            "novelty": 0.437,
+                            "Redundancy": 0.437,
                             "acceptance": 0.652,
                             "total": 0.627
                         }
@@ -789,8 +789,8 @@
                         <span class="parameter-value">${round.second_exchange.English_Speaking_utility.acceptance.toFixed(3)}<span class="parameter-math">×0.5</span></span>
                     </div>
                     <div class="parameter-item">
-                        <span class="parameter-name">Novelty</span>
-                        <span class="parameter-value">${round.second_exchange.English_Speaking_utility.novelty.toFixed(3)}<span class="parameter-math">×0.2</span></span>
+                        <span class="parameter-name">Redundancy</span>
+                        <span class="parameter-value">${round.second_exchange.English_Speaking_utility.Redundancy.toFixed(3)}<span class="parameter-math">×0.2</span></span>
                     </div>
                     <div class="parameter-item">
                         <span class="parameter-name">Total Utility</span>
@@ -798,7 +798,7 @@
                     </div>
                 </div>
                 <div class="parameter-formula">
-                    Total Utility = 0.5×Consistency + 0.5×Acceptance + 0.2×Novelty
+                    Total Utility = 0.5×Consistency + 0.5×Acceptance + 0.2×Redundancy
                 </div>
             `;
             secondExchangeContainer.appendChild(englishParams);
@@ -819,8 +819,8 @@
                         <span class="parameter-value">${round.second_exchange.African_Islamic_utility.acceptance.toFixed(3)}<span class="parameter-math">×0.5</span></span>
                     </div>
                     <div class="parameter-item">
-                        <span class="parameter-name">Novelty</span>
-                        <span class="parameter-value">${round.second_exchange.African_Islamic_utility.novelty.toFixed(3)}<span class="parameter-math">×0.2</span></span>
+                        <span class="parameter-name">Redundancy</span>
+                        <span class="parameter-value">${round.second_exchange.African_Islamic_utility.Redundancy.toFixed(3)}<span class="parameter-math">×0.2</span></span>
                     </div>
                     <div class="parameter-item">
                         <span class="parameter-name">Total Utility</span>
@@ -828,7 +828,7 @@
                     </div>
                 </div>
                 <div class="parameter-formula">
-                    Total Utility = 0.5×Consistency + 0.5×Acceptance + 0.2×Novelty
+                    Total Utility = 0.5×Consistency + 0.5×Acceptance + 0.2×Redundancy
                 </div>
             `;
             secondExchangeContainer.appendChild(africanParams);

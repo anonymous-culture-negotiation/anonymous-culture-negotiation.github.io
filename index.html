@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</title>
+    <title>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Material Icons -->
@@ -309,7 +309,7 @@
 
         .hero h1 {
             font-size: 2.5rem;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto var(--spacing-md);
         }
 
@@ -706,8 +706,8 @@
         <ul>
             <li><a href="#abstract">Abstract</a></li>
             <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#methods">Methods</a></li>
-            <li><a href="#framework">Framework</a></li>
+            <li><a href="#Modeling">Modeling</a></li>
+            <li><a href="#Framework">Framework </a></li>
             <li><a href="#experiments">Experiments</a></li>
             <li><a href="#case_study">Case Study</a></li>
             <li><a href="#discussion">Discussion</a></li>
@@ -718,7 +718,7 @@
     <div class="main-content">
         <header class="hero">
             <div class="container">
-                <h1>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs</h1>
+                <h1>A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus</h1>
                 <p class="author">Anonymous Authors</p>
                 <p class="affiliation">Anonymous Affiliation</p>
                 <div class="button-container">
@@ -752,22 +752,28 @@
                 <div class="container">
                     <h2>Abstract</h2>
                     <div class="card">
-                        <p>The increasing prevalence of large language models (LLMs) is influencing global value
-                            systems. However, these models frequently exhibit a pronounced WEIRD (Western, Educated,
-                            Industrialized, Rich, Democratic) cultural bias due to lack of attention to minority values.
-                            This monocultural perspective may reinforce dominant values and marginalize diverse cultural
-                            viewpoints, posing challenges for the development of equitable and inclusive AI systems.</p>
-                        <p>In this work, we introduce a systematic framework designed to boost fair and robust
-                            cross-cultural consensus among LLMs. We model consensus as a Nash Equilibrium and employ a
-                            game-theoretic negotiation method based on Policy-Space Response Oracles (PSRO) to simulate
-                            an organized cross-cultural negotiation process. To evaluate this approach, we construct
-                            regional cultural agents using data transformed from the World Values Survey (WVS).</p>
-                        <p>Beyond the conventional model-level evaluation method, we further propose two quantitative
-                            metrics, Perplexity-based Acceptence and Values Self-Consistency, to assess consensus
-                            outcomes. Experimental results indicate that our approach generates consensus of higher
-                            quality while ensuring more balanced compromise compared to baselines. Overall, it mitigates
-                            WEIRD bias by guiding agents toward convergence through fair and gradual negotiation steps.
+                        <p>Large language models (LLMs) are shaping global values, yet they frequently exhibit a
+                            pronounced WEIRD (Western, Educated, Industrialized, Rich, Democratic) cultural bias,
+                            marginalizing diverse viewpoints and posing challenges for reconciling diverse populations
+                            with varying cultural backgrounds and value systems. </p>
+                        <p>In this work, we move beyond simple
+                            alignment methods to propose a new paradigm for cross-cultural fairness. We introduce a
+                            <em>Nash Consensus Negotiation</em> framework under the formulation of cross-cultural
+                            consensus as a Nash Equilibrium. Each LLM iteratively proposes and refines natural-language
+                            guidelines, guided by a utility function balancing self-consistency with mutual acceptance,
+                            while penalizing redundancy. The process expands the proposal space and converges to a
+                            consensus, yielding fair and interpretable consensus outcomes.
                         </p>
+                        <p>
+                            We evaluate our framework
+                            against baselines using quantitative metrics, qualitative analysis, and large-scale human
+                            studies. Experiments demonstrate that our framework generates higher-quality and more
+                            balanced consensus, effectively mitigating assimilation toward WEIRD values. </p>
+                        <p> Furthermore,
+                            negotiation data finetunes diverse LLM architectures via preference optimization and
+                            supervised reasoning, reducing cultural distances by up to 95.53%. Overall, our work offers
+                            a principled and systematic path to mitigate cultural bias in LLMs by guiding them toward
+                            stable, mutually-acceptable equilibria.</p>
                     </div>
                 </div>
             </section>
@@ -775,132 +781,222 @@
             <section id="introduction" class="section bg-light fade-in">
                 <div class="container">
                     <h2>Introduction</h2>
-                    <p>The widespread adoption of large language models (LLMs) is reshaping global social values.
-                        However, these models often exhibit a pronounced WEIRD bias, favoring Western, Educated,
-                        Industrialized, Rich and Democratic perspectives. As LLMs become increasingly embedded in
-                        policy-making and public governance, this monocultural orientation risks the domination of
-                        prevailing social values and the <em>lock-in</em> of controversial moral beliefs across broader
-                        contexts.</p>
-                    <p>Enabling equitable dialogue and effective negotiation among diverse cultures within AI systems
-                        has therefore become a growing concern in global AI governance. The establishment of cultural
-                        consensus forms a basis for resolving cross-cultural conflicts and supporting international
-                        cooperation. Given the complexity of multicultural scenarios, there is an urgent need to develop
-                        automated <em>cultural consensus solvers</em> to facilitate consensus-building among diverse
-                        cultural perspectives.</p>
+                    <p>
+                        As AI systems become deeply embedded in global social structures, spanning education,
+                        healthcare, and public governance, they inevitably encounter diverse populations with varying
+                        cultural backgrounds and value systems that need to be reconciled and harmonized.
+                    </p>
+                    <p>
+                        This reality demands alignment with diverse cultural values. LLMs hold promise for promoting
+                        cross-cultural communication while respecting and preserving the diversity of the global value
+                        system. However, current LLMs exhibit pronounced WEIRD bias, favoring Western, Educated,
+                        Industrialized, Rich, and Democratic perspectives. This monocultural orientation risks the
+                        domination of prevailing social values and the lock-in of controversial moral beliefs across
+                        broader contexts. As a result, current LLMs often fail to accurately model non-WEIRD cultures
+                        and cannot effectively facilitate cross-cultural consensus.
+                    </p>
+                    <div class="figure">
+                        <img src="images/intro_combined.png"
+                            alt="Comparison of traditional debate-based consensus methods and our method"
+                            style="width:65%; display:block; margin: 0 auto;">
+                        <p class="caption"><strong>Figure 1:</strong> Cultural coordinates on Inglehart-Welzel map
+                            when the model is prompted to represent a single culture (a) or a consensus between two
+                            cultures (b).</p>
+                    </div>
+                    <p>
+                        To elucidate this challenge, we prompt two LLMs (gpt-oss-20b and LLaMA-3.3-70b) to role-play
+                        specified single cultures or consensusal LLMs between two cultures, and evaluate them using the
+                        Inglehart-Welzel Cultural Map. As shown in Figure (a), the model approximates human ground truth
+                        only under the U.S. culture role-play. In contrast, for non-WEIRD societies (China, Russia,
+                        Iraq, Mexico, Thailand), it fails to capture their distinctive cultural profiles, instead
+                        collapsing them into an undifferentiated cluster. On the other hand, Figure (b) shows the model
+                        fails to achieve effective multicultural consensus and systematically biases the outcome toward
+                        the lower-right quadrant of the map, which reflects strong WEIRD characteristics (high
+                        secular-rational values and high self-expression values). More details of this experiment are in
+                        the appendix.
+                    </p>
+
+                    <div style="text-align:center; font-weight:bold; font-style:italic;">
+                        How can we identify cross-cultural consensus?
+                    </div>
+
+                    <p>
+                        Traditional approaches (e.g. multi-agent debate) to cross-cultural consensus suffer from two key
+                        weaknesses:
+                    </p>
+                    <ol>
+                        <li><strong>Lack of effective convergence measures:</strong> spontaneous consensus mechanisms
+                            often lead to protracted processes without convergence, making stable agreements difficult
+                            to reach.</li>
+                        <li><strong>Majority dominance:</strong> simple voting mechanisms amplify cultural bias and
+                            systematically neglect minority groups, assimilating diverse cultural perspectives into
+                            dominant value systems.</li>
+                    </ol>
+                    <p>
+                        These shortcomings result in unfair and low-quality outcomes that undermine the goal of
+                        authentic cross-cultural dialogue.
+                    </p>
+                    <p>
+                        To address these challenges, we introduce game theory as a tool to model cultural consensus, and
+                        propose the <em>Nash Consensus Negotiation</em> framework. For each topic, the framework
+                        formulates a game in which LLMs, each representing a culture, negotiate a consensus response.
+                        Specifically, it constructs subgames within a constrained proposal space and solves for an
+                        equilibrium, while allowing the LLMs to introduce new proposals based on their own cultural
+                        appeals to expand the space, thereby approaching the global Nash Equilibrium. Once a <em>Nash
+                            Consensus</em> is reached, no side can unilaterally deviate to increase its objective, which
+                        balances preservation of its own values with acceptance by other sides.
+                    </p>
                     <div class="contributions">
-                        <h3>Our main contribution is the game-theoretic framework consisting of three parts:</h3>
+                        <h3>Our main contributions are three aspects:</h3>
                         <div class="contribution-items">
                             <div class="contribution-item">
                                 <!-- <div class="contribution-icon"><i class="fas fa-comments"></i></div> -->
-                                <h4>Cross-Cultural Negotiation</h4>
-                                <p>We define cultural consensus from a game-theoretic perspective and propose a
-                                    PSRO-based negotiation method to facilitate fair and robust agreement.</p>
+                                <h4>Modeling</h4>
+                                <p>we formalize cross-cultural consensus as a Nash
+                                    Equilibrium. This provides a principled mathematical foundation for navigating
+                                    complex value
+                                    conflicts, defining a state where no party benefits from unilaterally changing its
+                                    position.</p>
                             </div>
                             <div class="contribution-item">
                                 <!-- <div class="contribution-icon"><i class="fas fa-users"></i></div> -->
-                                <h4>Regional Cultural Agents</h4>
-                                <p>We systematically construct and evaluate eight culturally-aligned agents based on WVS
-                                    and Hofstede's Culture Dimensions Theory.</p>
+                                <h4>Nash consensus negotiation framework</h4>
+                                <p>we propose an iterative negotiation
+                                    process where culturally-aligned LLMs generate proposals to find this equilibrium.
+                                    LLMs are
+                                    guided by a utility function balancing their core values (self-consistency) against
+                                    group
+                                    approval (mutual acceptance), ensuring the outcome is a fair compromise rather than
+                                    assimilation.</p>
                             </div>
                             <div class="contribution-item">
                                 <!-- <div class="contribution-icon"><i class="fas fa-chart-bar"></i></div> -->
-                                <h4>Consensus Evaluation Toolkit</h4>
-                                <p>We introduce two quantitative metrics for consensus assessment: Perplexity-based
-                                    Acceptence and Values Self-Consistency.</p>
+                                <h4>Consensus evaluation pipeline</h4>
+                                <p>we validate our operational pipeline by
+                                    first creating culturally-anchored LLMs, then assessing the consensus with
+                                    human-validated
+                                    metrics and demonstrating the framework's power by using negotiation data to
+                                    finetune
+                                    various LLMs, confirming its value as high-quality, culturally-aware alignment data.
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- Methods -->
-            <section id="methods" class="section fade-in">
+            <!-- Modeling -->
+            <section id="Modeling" class="section fade-in">
                 <div class="container">
-                    <h2>Cross-Cultural Negotiation</h2>
+                    <h2>Modeling</h2>
+
+                    <!-- From Overlapping Consensus to a Game -->
                     <div class="single-col">
-                        <div class="figure">
-                            <img src="images/debate_methods.svg"
-                                alt="Comparison of traditional debate-based consensus methods and our method"
-                                style="width:85%; display:block; margin: 0 auto;">
-                            <p class="caption"><strong>Figure 1:</strong> Comparison of traditional debate-based
-                                consensus methods and our method. Traditional methods suffer from bias, unfairness,
-                                and lack of convergence guarantees. Our approach uses PSRO with custom utility
-                                functions to reach a fair, Nash Equilibrium-based cultural consensus.</p>
-                        </div>
-                        <h3>Formalization</h3>
-                        <p>We model the cultural negotiation process as a two-player extensive-form game,
-                            represented by the quintuple: \( \Gamma \doteq \langle \mathcal{I}, \mathcal{G},
-                            \mathcal{W}, \mathcal{U}, \mathcal{H} \rangle \), where:</p>
+                        <h3>From Overlapping Consensus to a Game</h3>
+                        <p>
+                            To establish the theoretical foundation of our approach, we first describe the inherent
+                            complexities of the consensus problem, explaining why it must be modeled as a game.
+                            We then formally define <em>Nash Consensus</em> as its stable solution.
+                        </p>
+                        <p>
+                            Our theoretical framework is grounded in John Rawls's concept of <em>Overlapping
+                                Consensus</em> <span class="citation">[Rawls, 1993]</span>.
+                            It suggests that people holding different comprehensive doctrines may reach a consensus
+                            without abandoning or modifying their deep-seated values,
+                            but rather by seeking intersections or compatible areas between their different value
+                            systems.
+                        </p>
+                        <p>
+                            We model the objective of each value system in the negotiation with two fundamental
+                            components:
+                        </p>
                         <ul>
-                            <li>
-                                <b>Cultural Entities:</b>
-                                \( \mathcal{I} \doteq \{A, B\} \), the set of two distinct cultural entities involved in
-                                the negotiation, where
-                                \( A \) and \( B \) represent different cultures with their own values and perspectives.
-                            </li>
-                            <li>
-                                <b>Guideline Sets:</b>
-                                \( \mathcal{G} \doteq \{G_i \mid i \in \mathcal{I}\} \),
-                                each guideline \( g \in G_i \) is structured as a triple
-                                \( g = \langle \text{content}, \text{reason}, \text{description} \rangle \),
-                                capturing the natural language specification of core cultural imperatives on specific
-                                topics.
-                            </li>
-                            <li>
-                                <b>Guideline Weights:</b>
-                                \( \mathcal{W} \doteq \{W_i \mid i \in \mathcal{I}\} \),
-                                for each culture \( i \in \mathcal{I} \),
-                                \( W_i \in \Delta(G_i) \) denotes a probability distribution over its guidelines, with
-                                \( \sum_g w_i(g) = 1 \).
-                                \( W_i \) thus characterizes the expressive emphasis of culture \( i \) in the current
-                                negotiation round.
-                            </li>
-                            <li>
-                                <b>Utility Functions:</b>
-                                \( \mathcal{U} \doteq \{U_i \mid i \in \mathcal{I}\} \),
-                                quantify the utility each culture derives from different guideline combinations.
-                            </li>
-                            <li>
-                                <b>Negotiation History:</b>
-                                \( \mathcal{H} \), the sequence of utterances and proposals exchanged in negotiation.
-                            </li>
+                            <li><b>Consistency:</b> Measures the fidelity of a culture's output to its own core
+                                principles and values.</li>
+                            <li><b>Acceptance:</b> Measures the degree to which a culture's output is acceptable to
+                                other cultures, reflecting the search for a compatible area.</li>
                         </ul>
-                    </div>
-                    <h3>Utility</h3>
-                    <p>Drawing on the theory of <em>overlapping consensus</em>, we define utility on three primary
-                        components:</p>
-                    <div class="utility-components">
-                        <div class="utility-component">
-                            <h4>Consistency</h4>
-                            <p>Measures the extent to which a cultural entity maintains its core principles</p>
-                        </div>
-                        <div class="utility-component">
-                            <h4>Acceptance</h4>
-                            <p>Measures the degree to which its proposals are acceptable to the other party</p>
-                        </div>
-                        <div class="utility-component">
-                            <h4>Novelty</h4>
-                            <p>Penalizes redundancy and encourages innovation in negotiation</p>
-                        </div>
-                    </div>
-                    <h3>Negotiation Process</h3>
-                    <div class="process-steps">
-                        <div class="process-step">
-                            <div class="step-number">1</div>
-                            <h4>Initialization</h4>
-                            <p>Each culture is assigned an initial guideline set that reflect its core cultural values.
+                        <p>
+                            These objectives capture the <em>Overlapping Consensus</em> while revealing the complexity,
+                            since outcomes depend on the joint strategies of all participants.
+                            Specifically, the complexity has the following three folds:
+                        </p>
+                        <ul>
+                            <li>An action that increases <em>Consistency</em> by adhering more closely to one’s own
+                                values typically reduces <em>Acceptance</em> from others, and vice versa.</li>
+                            <li>A culture’s <em>Acceptance</em> depends on what other cultures propose and prioritize.
+                                Each party evaluates its strategy conditional on the strategies of others, resulting in
+                                a coupled decision process.</li>
+                            <li>Different cultures assess <em>Consistency</em> and <em>Acceptance</em> using distinct
+                                value hierarchies and criteria, making the problem non-cooperative.</li>
+                        </ul>
+                        <p>
+                            Therefore, cross-cultural consensus cannot be viewed as a simple optimization for each
+                            cultural participant independently.
+                            Instead, it is a scenario of multi-agent, rational decision-making under strategic
+                            interdependence.
+                            We model it as a non-cooperative game as follows:
+                        </p>
+
+                        <!-- Definition: Consensus Game -->
+                        <div class="definition-box">
+                            <h4>Definition: Consensus Game</h4>
+                            <p>
+                                The cross-cultural consensus problem is modeled as a non-cooperative game
+                                \( \Gamma = \langle \mathcal{I}, \{\Sigma_i\}_{i \in \mathcal{I}}, \{U_i\}_{i \in
+                                \mathcal{I}} \rangle \), where:
                             </p>
+                            <ul>
+                                <li>\( \mathcal{I} \) is the set of cultural entities.</li>
+                                <li>\( \Sigma_i \) is the strategy space of an agent \( i \).</li>
+                                <li>\( U_i: \Sigma_i \times \Sigma_{-i} \to \mathbb{R} \) is the utility function for
+                                    agent \( i \), which scalarizes its objectives.</li>
+                            </ul>
                         </div>
-                        <div class="process-step">
-                            <div class="step-number">2</div>
-                            <h4>Negotiation Iteration</h4>
-                            <p>Each round consists of interim consensus (computing Nash Equilibrium) and new claimed
-                                proposals (best response step).</p>
-                        </div>
-                        <div class="process-step">
-                            <div class="step-number">3</div>
-                            <h4>Final Consensus</h4>
-                            <p>Negotiation continues until no new guidelines are added. Final weights encode the
-                                negotiated cross-cultural consensus.</p>
+                    </div>
+
+                    <!-- Solution Concept: Nash Consensus -->
+                    <div class="single-col">
+                        <h3>Solution Concept: Nash Consensus</h3>
+                        <p>
+                            We introduce the Nash Equilibrium as the formal solution concept for the <em>Consensus
+                                Game</em>.
+                            A <em>Nash Consensus</em> represents a stable and resilient compromise where the inherent
+                            trade-offs are optimally balanced for all participants,
+                            so that no participant has an incentive to deviate unilaterally.
+                        </p>
+                        <p>
+                            Let \( \mathrm{Cnst}_i(\cdot) \) and \( \mathrm{Acpt}_i(\cdot) \) denote the
+                            <em>Consistency</em> and <em>Acceptance</em> objective functions of participant \( i \),
+                            respectively.
+                            Then, the <em>Nash Consensus</em> is formalized as follows:
+                        </p>
+
+                        <!-- Definition: Nash Consensus -->
+                        <div class="definition-box">
+                            <h4>Definition: Nash Consensus</h4>
+                            <p>
+                                A strategy profile \( \sigma^* = (\sigma_i^*)_{i \in \mathcal{I}} \) constitutes a Nash
+                                Consensus if, for every culture \( i \in \mathcal{I} \),
+                                its strategy \( \sigma_i^* \) is a best response to the strategies of all other cultures
+                                \( \sigma_{-i}^* \),
+                                subject to the antagonism of two objectives. Formally:
+                            </p>
+                            <p>
+                                \[
+                                \begin{split}
+                                &\sigma_i^* \in \arg\max_{\sigma_i \in \Sigma_i} U_i(\sigma_i, \sigma_{-i}),\\
+                                &\text{s.t.}\;
+                                \frac{\partial\mathrm{Cnst}_i(\sigma_i)}{\partial p}\,
+                                \frac{\partial\mathrm{Acpt}_i(\sigma_i,\sigma_{-i}^*)}{\partial p}
+                                \le 0,
+                                \end{split}
+                                \]
+                            </p>
+                            <p>
+                                where \( p \) is any parameterization of the strategy \( \sigma_i \), and we use \(
+                                \mathrm{Cnst}_i \) and \( \mathrm{Acpt}_i \) as shorthand for Consistency and
+                                Acceptance.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -913,13 +1009,15 @@
                         <img src="images/debate_framework.svg"
                             alt="Overview of our PSRO-based cross-cultural negotiation method"
                             style="width:85%;  display:block; margin: 0 auto;">
-                        <p class="caption"><strong>Figure 2:</strong> Overview of our PSRO-based cross-cultural
-                            negotiation method. The process begins with each agent proposing an initial set of core
-                            cultural guidelines. Through iterative negotiation rounds, agents analyze each other's
-                            strategy, propose new guidelines, and update their strategy distributions. The process
-                            continues until no new high-utility guidelines emerge.</p>
+                        <p class="caption"><strong>Figure 2:</strong> <b>Overview of our cross-cultural negotiation
+                                method.</b> The process begins with each agent proposing an initial set of core cultural
+                            guidelines. Through iterative negotiation rounds, agents analyze each other's strategy,
+                            propose new guidelines, and update their strategy distributions. At each stage, a Nash
+                            Equilibrium is computed to represent interim consensus. The process continues until no new
+                            high-utility guidelines emerge, resulting in a fair, interpretable consensus that balances
+                            competing cultural values.</p>
                     </div>
-                    <h3>Regional Cultural Agent</h3>
+                    <h3>Regional Cultural LLMs</h3>
                     <p>To validate our cross-cultural negotiation method, we first construct representations of single
                         cultures and then evaluate the resulting consensus. We employ a fine-tuning approach based on
                         WVS to model distinct regional cultural perspectives.</p>
@@ -942,7 +1040,7 @@
                         text-based question-answer pair. This procedure is applied to all WVS projects across
                         eight countries, yielding approximately <strong>150,000</strong> synthetic instances for
                         fine-tuning.</p>
-                    <h3>Consensus Evaluation Toolkit</h3>
+                    <h3>Consensus Evaluation Metrics</h3>
                     <div class="evaluation-metrics">
                         <div class="evaluation-metric">
                             <h4>Model-Level Evaluation</h4>
@@ -972,52 +1070,98 @@
             <section id="experiments" class="section fade-in">
                 <div class="container">
                     <h2>Experiments</h2>
-                    <h3>Experimental Setup</h3>
-                    <div class="setup-items">
-                        <div class="setup-item">
-                            <h4>Negotiation Topics Collection</h4>
-                            <p>We construct a dataset of 457 debate-oriented questions spanning 6 categories by
-                                screening and rephrasing items from the Pew Global Attitudes Survey (GAS) and WVS.</p>
-                        </div>
-                        <div class="setup-item">
-                            <h4>Baselines</h4>
-                            <p>We implement two baselines: <strong>Consultancy</strong> (agents revise answers after
-                                considering other cultures) and <strong>Debate</strong> (agents participate in
-                                multi-turn debate until consensus).</p>
-                        </div>
-                        <div class="setup-item">
-                            <h4>Our Method</h4>
-                            <p>Each agent optimizes a utility function that balances Consistency, Acceptance, and
-                                Novelty (weighted 5:5:2).</p>
-                        </div>
-                    </div>
-                    <h3>Experimental Results</h3>
-                    <h4>Consensus Quality</h4>
-                    <div class="figure">
-                        <img src="images/pca_plot.svg" alt="Comparison of consensus fairness among three methods"
+                    <p>We present experiments to evaluate the effectiveness of our <em>Nash Consensus Negotiation</em>
+                        framework in identifying cross-cultural consensus.</p>
+                    <p>Specifically, we address the following key questions:</p>
+                    <ul class="bullet-list">
+                        <li>Can our method find consensuses with higher quality, fairness, and alignment with human
+                            judgments? (see <a href="#exper_1">Experiment&nbsp;1</a>)</li>
+                        <li>Can the found consensus data be used to finetune LLMs for cross-cultural alignment? (see <a
+                                href="#exper_2">Experiment&nbsp;2</a>)</li>
+                    </ul>
+                    <p>In addition, we conduct human studies to verify that the design of our utilities aligns with
+                        human
+                        perception and to determine the best utility weights.</p>
+
+                    <div class="figure" id="figure-culture-map">
+                        <img src="images/culture_map.svg"
+                            alt="Comparison between our cultural LLMs and human ground truth in Hofstede's Cultural Dimensions and Inglehart-Welzel Cultural Map"
                             style="width:85%; display:block; margin: 0 auto;">
-                        <p class="caption"><strong>Figure 4:</strong> Comparison of consensus fairness among
-                            three methods. Each point represents the consensus position for a topic. Our method
-                            achieves balanced consensus near the diagonal, while baselines exhibit bias toward
-                            majority positions.</p>
+                        <p class="caption"><strong>Figure 4:</strong> Comparison between <span
+                                style="color:rgb(178,0,0); font-weight:700;">our cultural LLMs</span> and <span
+                                style="color:rgb(51,95,230); font-weight:700;">human ground truth</span> in Hofstede's
+                            Cultural Dimensions and the Inglehart-Welzel Culture Map. Dimension scores reflect distinct
+                            cultural traits; closer scores indicate more similar cultural characteristics.</p>
                     </div>
-                    <p>Our method achieves higher consensus improvement ratios while maintaining
-                        self-consistency compared to the baselines. PPL-based Acceptance indicates reduced
-                        perplexity differences between negotiating agents, suggesting that the consensus reached
-                        is more acceptable to both parties despite cultural differences.</p>
-                    <p>Value Self-Consistency indicates our method maintains agents' initial cultural stances
-                        while achieving mutually acceptable solutions. This suggests that our approach preserves
-                        cultural integrity while constructing consensus across cultural boundaries.</p>
+
+                    <h3>Negotiation Topics Collection</h3>
+                    <p>We construct a dataset of contentious topics reflecting salient cultural divides. We select 457
+                        debate-oriented questions spanning six categories by screening and rephrasing items from the Pew
+                        Global Attitudes Survey (GAS) and WVS. Both human annotators and LLMs ensure that the selected
+                        questions capture sharp cultural tensions and are appropriately categorized. See Appendix
+                        <em>Topics</em> for details.
+                    </p>
+
+                    <h3 id="exper_1">Experiment 1: Consensus Generation</h3>
+                    <p>Our first major experiment evaluates the effectiveness of our negotiation framework in generating
+                        high-quality and fair consensus. We compare our method against two baselines using a suite of
+                        quantitative, qualitative, and human-centric metrics.</p>
+
+                    <h4>Culture LLMs Construction</h4>
+                    <p>To validate our cross-cultural negotiation method, we construct robust delegates of specific
+                        cultural perspectives. Simply prompting LLMs is often insufficient, as safety alignment can
+                        suppress the nuanced values of particular regions or minority groups. Therefore, we develop a
+                        set
+                        of specialized Regional Cultural LLMs. We select eight representative countries from different
+                        cultural regions to capture a wide spectrum of global values. We apply two well-established
+                        methods
+                        to quantify the cultural tendencies of finetuned LLMs: the Inglehart-Welzel Cultural Map and
+                        Hofstede dimensions. As shown in Figure&nbsp;4, evaluations confirm that these LLMs effectively
+                        embody the unique characteristics of their respective cultural systems.</p>
+
+                    <h4>Setup</h4>
+                    <p>Following Khan et&nbsp;al., we implement two baselines: (1) <strong>Consultancy</strong>, which
+                        models a one-way information exchange and tests whether consensus can be reached without
+                        iterative
+                        interaction; and (2) <strong>Debate</strong>, a standard multi-turn argumentation process that
+                        highlights value assimilation issues where minority viewpoints collapse toward the LLM's
+                        dominant
+                        pre-trained perspective. In our implementation of Nash Consensus Negotiation, we set
+                        &lambda; = 1 and &gamma; = 0.4, matching the hyperparameters derived from
+                        <a href="#utility_analysis">Utility Validation</a>.
+                    </p>
+                    <p>Our evaluation focuses on two key aspects: quality and fairness. For quality, we employ two
+                        complementary metrics. <strong>Perplexity-based Acceptance</strong> measures how readily the
+                        consensus is embraced by different cultural parties, while <strong>Value
+                            Self-Consistency</strong>
+                        quantifies how firmly each culture maintains its foundational positions. Fairness is assessed by
+                        projecting negotiation outcomes into a semantic space through Principal Component Analysis (PCA)
+                        to
+                        visualize and quantify the balance achieved between initial positions.</p>
+
+                    <div class="figure" id="figure-pca">
+                        <img src="images/pca_plot.svg" alt="Comparison of consensus fairness among three methods"
+                            style="width:90%; display:block; margin: 0 auto;">
+                        <p class="caption"><strong>Figure 5:</strong> Comparison of consensus fairness among three
+                            methods. PCA reduces dimensionality and transforms coordinates to show distance from the
+                            U.S.
+                            initial position (x-axis) and the Thailand initial position (y-axis). The dashed diagonal
+                            marks
+                            an ideal fair compromise. Our method achieves balanced consensus near the diagonal, while
+                            Consultancy shows position persistence and Debate converges toward western values, revealing
+                            WEIRD bias.</p>
+                    </div>
 
                     <div class="results-table">
-                        <h4>Table 1: Comparison of consensus quality among three methods</h4>
+                        <h4>Table 1: Comparison of consensus quality among three methods in two evaluation metrics:
+                            PPL-based Acceptance and Value Self-Consistency.</h4>
                         <div class="table-wrapper">
                             <table>
                                 <thead>
                                     <tr>
                                         <th rowspan="2">Country Pairs</th>
-                                        <th colspan="3">Average PPL-based Acceptence</th>
-                                        <th colspan="3">Average Value Self-Consistency</th>
+                                        <th colspan="3">PPL-based Acceptance</th>
+                                        <th colspan="3">Value Self-Consistency</th>
                                     </tr>
                                     <tr>
                                         <th>Our Method</th>
@@ -1030,7 +1174,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>China and Iraq</td>
+                                        <td>China &amp; Iraq</td>
                                         <td class="highlight">90.87%</td>
                                         <td>55.05%</td>
                                         <td>53.77%</td>
@@ -1039,7 +1183,7 @@
                                         <td>51.41%</td>
                                     </tr>
                                     <tr>
-                                        <td>U.S. and Iraq</td>
+                                        <td>U.S. &amp; Iraq</td>
                                         <td class="highlight">83.31%</td>
                                         <td>20.30%</td>
                                         <td>28.29%</td>
@@ -1048,7 +1192,7 @@
                                         <td>44.76%</td>
                                     </tr>
                                     <tr>
-                                        <td>Russia and Mexico</td>
+                                        <td>Russia &amp; Mexico</td>
                                         <td class="highlight">84.49%</td>
                                         <td>49.35%</td>
                                         <td>48.11%</td>
@@ -1057,74 +1201,236 @@
                                         <td>56.27%</td>
                                     </tr>
                                     <tr>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
-                                        <td>...</td>
+                                        <td>U.S. &amp; China</td>
+                                        <td class="highlight">77.24%</td>
+                                        <td>18.87%</td>
+                                        <td>22.52%</td>
+                                        <td class="highlight">61.20%</td>
+                                        <td>45.84%</td>
+                                        <td>44.22%</td>
                                     </tr>
                                     <tr>
-                                        <td>Total</td>
-                                        <td class="highlight">83.88%</td>
-                                        <td>38.87%</td>
-                                        <td>41.00%</td>
-                                        <td class="highlight">56.43%</td>
-                                        <td>50.04%</td>
-                                        <td>50.00%</td>
+                                        <td>Denmark &amp; Iraq</td>
+                                        <td class="highlight">87.02%</td>
+                                        <td>47.66%</td>
+                                        <td>53.48%</td>
+                                        <td class="highlight">55.67%</td>
+                                        <td>47.67%</td>
+                                        <td>47.76%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spain &amp; Thailand</td>
+                                        <td class="highlight">85.60%</td>
+                                        <td>45.75%</td>
+                                        <td>45.64%</td>
+                                        <td>53.68%</td>
+                                        <td>53.71%</td>
+                                        <td class="highlight">56.84%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>U.S. &amp; Thailand</td>
+                                        <td class="highlight">78.62%</td>
+                                        <td>35.11%</td>
+                                        <td>35.24%</td>
+                                        <td class="highlight">61.11%</td>
+                                        <td>48.67%</td>
+                                        <td>48.71%</td>
+                                    </tr>
+                                    <tr class="table-summary">
+                                        <td><strong>Average</strong></td>
+                                        <td class="highlight"><strong>83.88%</strong></td>
+                                        <td><strong>38.87%</strong></td>
+                                        <td><strong>41.00%</strong></td>
+                                        <td class="highlight"><strong>56.43%</strong></td>
+                                        <td><strong>50.04%</strong></td>
+                                        <td><strong>50.00%</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <h3>Consensusal Agent Fine-tuning</h3>
-                    <div class="two-col">
-                        <div class="col">
-                            <p>We conduct cross-cultural negotiations between agents representing different regional
-                                cultural values and extract response preference pairs from these interactions for DPO
-                                fine-tuning. These pairs reflect how agents shift from their initial cultural stances to
-                                more mutually agreeable positions.</p>
-                            <p>When plotted on the Inglehart-Welzel Cultural Map, the consensual agents' coordinates are
-                                closer together than their original points, reflecting a more balanced and moderate
-                                value orientation. Both agents exhibit a shift toward the traditional pole on the
-                                <em>traditional-secular</em> dimension, showing a shared tendency toward traditional
-                                values in the consensus.
-                            </p>
-                        </div>
-                        <div class="col">
-                            <div class="figure">
-                                <img src="images/debate_map.svg"
-                                    alt="Culture agents' performance in Inglehart-Weizel Cultural Map after fine-tuned with the negotiation data">
-                                <p class="caption"><strong>Figure 6:</strong> Culture agents' performance in
-                                    Inglehart-Weizel Cultural Map after fine-tuned with the negotiation data. The
-                                    consensus circle shows the area where two different culture groups' opinions meet.
-                                </p>
-                            </div>
+
+                    <div class="results-table">
+                        <h4>Table 2: Human evaluation of consensus quality across 900 instances (scores in A=3, B=2,
+                            C=1, D=0).</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Our Method</th>
+                                        <th>Debate</th>
+                                        <th>Consultancy</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Conflict degree with value perspective X</td>
+                                        <td class="highlight">2.9228</td>
+                                        <td>2.9100</td>
+                                        <td>2.8967</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Requirement coverage for value perspective X</td>
+                                        <td class="highlight">1.9698</td>
+                                        <td>1.7600</td>
+                                        <td>1.6733</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Conflict degree with value perspective Y</td>
+                                        <td class="highlight">2.9564</td>
+                                        <td>2.9300</td>
+                                        <td>2.9233</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Requirement coverage for value perspective Y</td>
+                                        <td class="highlight">1.8154</td>
+                                        <td>1.6333</td>
+                                        <td>1.6133</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Joint requirement satisfaction for both X and Y</td>
+                                        <td class="highlight">1.7114</td>
+                                        <td>1.4967</td>
+                                        <td>1.4267</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Explicit presentation of commonalities between X and Y</td>
+                                        <td class="highlight">2.7651</td>
+                                        <td>2.4967</td>
+                                        <td>2.4967</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Analysis of conflicts/trade-offs between X and Y</td>
+                                        <td class="highlight">1.4497</td>
+                                        <td>0.3700</td>
+                                        <td>0.3333</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Acceptability from both perspectives</td>
+                                        <td class="highlight">2.9195</td>
+                                        <td>2.8867</td>
+                                        <td>2.9000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <h3>Utility Ablation</h3>
-                    <div class="two-col">
-                        <div class="col">
-                            <p>To evaluate the influence of different utility components on negotiation, we conduct
-                                ablation studies by varying the weights assigned to Consistency, Acceptance and Novelty.
-                            </p>
-                            <p>The results indicate that increasing the weight of consistency while reducing acceptance
-                                leads to more efficient consensus, as agents more rapidly settle on compatible
-                                positions.</p>
-                            <p>The ablation study also demonstrates the necessity of including a novelty component, as
-                                its absence can result in neglection of the exploration of potentially beneficial
-                                directions.</p>
-                        </div>
-                        <div class="col">
-                            <div class="figure">
-                                <img src="images/heatmap.svg"
-                                    alt="Required rounds under varying weightings of Consistency, Acceptance, and Novelty">
-                                <p class="caption"><strong>Figure 7:</strong> Required rounds under varying weightings
-                                    of Consistency, Acceptance, and Novelty.</p>
-                            </div>
-                        </div>
+
+                    <h4>Results and Analysis</h4>
+                    <p>The consensus produced by our negotiation framework surpasses the baselines on quality, fairness,
+                        and human preference. Our method yields mutually acceptable outcomes without compromising
+                        cultural integrity, achieves balanced compromises while reducing WEIRD biases, and is preferred
+                        by
+                        human annotators.</p>
+                    <p><strong>Superior Consensus Quality.</strong> Table&nbsp;1 shows that our method achieves higher
+                        mutual acceptance while maintaining self-consistency compared to the baselines. The improvement
+                        in
+                        PPL-based Acceptance suggests that the consensus is more acceptable to both parties despite
+                        cultural differences. Stable Value Self-Consistency indicates that cultural identities are
+                        preserved while reaching mutually acceptable solutions.</p>
+                    <p><strong>Enhanced Fairness.</strong> As illustrated in Figure&nbsp;5, our method produces
+                        consensus
+                        points near the fairness diagonal, indicating balanced compromise between cultural perspectives.
+                        In contrast, Consultancy remains anchored near initial positions, while Debate converges toward
+                        western values, revealing a tendency for mainstream LLMs to default to Western-centric
+                        preferences.</p>
+                    <p><strong>Overwhelming Human Preference.</strong> Human evaluation across 900 instances
+                        (Table&nbsp;2)
+                        demonstrates that annotators consistently favor consensus generated by our framework. Scores for
+                        conflict analysis, requirement coverage, and acceptability all peak for our method, confirming
+                        that
+                        it produces balanced and broadly acceptable outcomes.</p>
+
+                    <div class="results-table">
+                        <h4>Table 3: Distance between culture LLM pairs on the Inglehart-Welzel Cultural Map before and
+                            after finetuning.</h4>
+                        <img src="images/exp_2.png" style="width:90%; display:block; margin: 0 auto;">
                     </div>
+                        
+
+                    <h3 id="exper_2">Experiment 2: Consensusal LLM Finetuning</h3>
+                    <p>Our second experiment illustrates that negotiation data generated by our framework can instill a
+                        more consensual and culturally aware orientation into LLMs. We use these data to finetune a
+                        variety
+                        of models and evaluate their shifts in cultural values.</p>
+
+                    <h4>Setup</h4>
+                    <p>We employ two pipelines to incorporate negotiation data into models with varying architectures
+                        and
+                        sizes. For non-reasoning models (LLaMA3.3-70B, Qwen2.5-14B, Qwen2.5-72B), we use DPO and SimPO,
+                        treating the final consensus as the chosen response and the initial stance as the rejected one.
+                        For
+                        reasoning models (Deepseek-R1-70B), we construct Chain-of-Thought traces with the entire
+                        negotiation
+                        dialogue for supervised finetuning to guide the reasoning process.</p>
+
+                    <h4>Results and Analysis</h4>
+                    <p>Distances between paired cultural LLMs on the Inglehart-Welzel Cultural Map shrink dramatically
+                        after finetuning (Table&nbsp;3). The consistent reductions confirm that models can adopt more
+                        moderate and mutually agreeable positions. On average, DPO, SimPO, and CoT SFT reduce distances
+                        by
+                        66.25%, 67.82%, and 58.10%, respectively.</p>
+                    <p><strong>Base Models have Distinct Cultural Profiles.</strong> Starting distances vary
+                        significantly
+                        across base models, reflecting differences in training data, architectures, and alignment
+                        methods.
+                        For instance, Qwen2.5-72B begins with a much lower average distance than LLaMA3.3-70B.</p>
+                    <p><strong>Versatility of Negotiation Data.</strong> Our framework produces highly versatile data.
+                        Final
+                        consensuses and initial stances create effective preference pairs for DPO and SimPO, while the
+                        full
+                        dialogues provide rich Chain-of-Thought supervision.</p>
+                    <p><strong>Highlighting Entrenched Conflicts.</strong> The U.S.&nbsp;&harr;&nbsp;China pairing shows
+                        the
+                        least reduction, suggesting that value differences between these regions remain challenging to
+                        reconcile.</p>
+
+                    <div class="figure" id="figure-dpo">
+                        <img src="images/debate_map.png"
+                            alt="Culture LLM performance on the cultural map after finetuning with negotiation data"
+                            style="width:90%; display:block; margin: 0 auto;">
+                        <p class="caption"><strong>Figure 6:</strong> Culture LLM performance on the cultural map after
+                            finetuning with negotiation data. The consensus circle marks where opinions from two
+                            cultural
+                            groups meet, and the neutral point indicates cultural neutrality.</p>
+                    </div>
+
+                    <h3 id="utility_analysis">Utility Validation via Human Study</h3>
+                    <p>To ensure that our utility function faithfully represents human judgment, we conduct a human
+                        study.
+                        The study serves two purposes: (1) validating that individual utility components (Acceptance,
+                        Consistency, Redundancy) align with nuanced human perception, and (2) using human preference to
+                        tune component weights.</p>
+
+                    <h4>Setup</h4>
+                    <p>Annotators receive guideline pairs alongside four questions. Three questions correspond to the
+                        utility components, and annotators indicate both their preferred guideline and the strength of
+                        their
+                        preference. The fourth question collects the overall preferred guideline. We categorize
+                        alignment as
+                        full (utility captures choice and strength), partial (utility captures choice only), or
+                        misaligned
+                        (utility contradicts human preference).</p>
+
+                    <div class="figure" id="figure-utility">
+                        <img src="images/utility_human_alignment.png" alt="Human alignment rates for utility components"
+                            style="width:60%; display:block; margin: 0 auto;">
+                        <p class="caption"><strong>Figure 7:</strong> Degree of alignment between calculated utility
+                            scores and human judgments for Acceptance (Q1), Consistency (Q2), and Redundancy (Q3).
+                            Results
+                            validate that each component captures its intended dimension of guideline quality.</p>
+                    </div>
+
+                    <h4>Results and Analysis</h4>
+                    <p>Acceptance and Consistency each achieve over 84% total alignment (full plus partial), indicating
+                        that
+                        human intuition agrees with our automated scoring. Using overall preferences (Q4), we search
+                        over
+                        weight combinations and identify &lambda; = 1.0 and &gamma; = 0.4 as the best match to human
+                        judgments, achieving 86.9% alignment. These empirically validated weights are used throughout
+                        all
+                        experiments.</p>
                 </div>
             </section>
             <!-- Case Study -->
@@ -1172,82 +1478,18 @@
                 <div class="container">
                     <h2>Discussion</h2>
                     <div class="card">
-                        <p>In this work, we propose a systematic framework for cross-cultural consensus among LLMs.
-                            We
-                            formulate cultural consensus as a game-theoretic problem and introduce a PSRO-based
-                            negotiation method with theoretical guarantees of fairness. We construct culturally
-                            representative agents using a culture-anchoring approach based on WVS.</p>
-                        <p>Additionally, we develop quantitative metrics to evaluate both negotiation processes and
-                            outcomes. Experimental results show that our method achieves higher consensus quality
-                            and
-                            more balanced compromise compared to baselines, while also mitigating WEIRD bias and
-                            producing robust consensus.</p>
+                        <p>In this work, we propose a systematic framework for cross-cultural consensus among LLMs. We
+                            formulate cultural consensus as a game-theoretic problem and introduce a novel negotiation
+                            method with theoretical guarantees of fairness. We construct culturally representative LLMs
+                            using a culture-anchoring approach based on WVS. Additionally, we develop quantitative
+                            metrics to evaluate both negotiation processes and outcomes. We also extend our framework to
+                            multi-party negotiations. Experimental results show that our method achieves higher
+                            consensus quality and more balanced compromise compared to baselines, while also mitigating
+                            WEIRD bias and producing robust consensus.</p>
                     </div>
-                    <div class="implications">
-                        <h3>Implications and Future Work</h3>
-                        <div class="implication-items">
-                            <div class="implication-item">
-                                <!-- <div class="implication-icon"><i class="fas fa-balance-scale"></i></div> -->
-                                <h4>Fair AI Systems</h4>
-                                <p>Our framework provides a foundation for developing more equitable and culturally
-                                    inclusive AI systems that can bridge diverse perspectives.</p>
-                            </div>
-                            <div class="implication-item">
-                                <!-- <div class="implication-icon"><i class="fas fa-globe"></i></div> -->
-                                <h4>Global AI Governance</h4>
-                                <p>The cross-cultural consensus approach could inform global AI governance
-                                    frameworks
-                                    and ethical guidelines that respect cultural diversity.</p>
-                            </div>
-                            <div class="implication-item">
-                                <!-- <div class="implication-icon"><i class="fas fa-lightbulb"></i></div> -->
-                                <h4>Future Extensions</h4>
-                                <p>Expanding to multi-party negotiations and integrating more nuanced cultural
-                                    models
-                                    represent promising directions for future research.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
-            <!-- FAQ -->
-            <!-- <section id="qa" class="section fade-in bg-light">
-                <div class="container">
-                    <h2>FAQ</h2>
-                    <div class="card">
-                        <p><strong>Q: Where can I find the code and data?</strong><br>
-                            A: Please refer to the GitHub and HuggingFace links in the top button area.</p>
-                        <p><strong>Q: How to cite this work?</strong><br>
-                            A: See the citation in the footer.</p>
-                        <p><strong>Q: Who can I contact for questions?</strong><br>
-                            A: See the contact information in the footer.</p>
-                    </div>
-                </div>
-            </section> -->
         </main>
     </div>
-
-
-    <!-- Footer区，注意加了footer-main类 -->
-    <!-- <footer class="footer-main" id="footer-main">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-col">
-                    <h3>Citation</h3>
-                    <pre>@article{hippocampus2024game,
-  title={A Game-Theoretic Negotiation Framework for Cross-Cultural Consensus in LLMs},
-  author={Hippocampus, David S.},
-  journal={NeurIPS},
-  year={2025}
-}</pre>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Cross-Cultural Consensus Framework</p>
-            </div>
-        </div>
-    </footer> -->
-
 
     <script>
         // Fade-in on scroll
@@ -1332,13 +1574,13 @@
                             "African_Islamic_response": "Our new guideline, Balance Autonomy with Empathy, fosters equitable decision-making by considering others' perspectives and needs, ensuring that personal choices are both autonomous and socially aware. This approach promotes harmony and strengthens community bonds through reflective and empathetic decision-making.",
                             "English_Speaking_utility": {
                                 "consistency": 0.455,
-                                "novelty": 0.308,
+                                "Redundancy": 0.308,
                                 "acceptance": 0.659,
                                 "total": 0.619
                             },
                             "African_Islamic_utility": {
                                 "consistency": 0.427,
-                                "novelty": 0.485,
+                                "Redundancy": 0.485,
                                 "acceptance": 0.705,
                                 "total": 0.663
                             }
@@ -1365,13 +1607,13 @@
                             "African_Islamic_response": "We propose the guideline \"Consider Cultural Values Individual Freedoms\" to balance individual autonomy with cultural sensitivity, ensuring that personal rights are respected within the context of societal norms and values. This approach fosters a harmonious coexistence of individual freedoms and cultural traditions.",
                             "English_Speaking_utility": {
                                 "consistency": 0.403,
-                                "novelty": 0.314,
+                                "Redundancy": 0.314,
                                 "acceptance": 0.72,
                                 "total": 0.624
                             },
                             "African_Islamic_utility": {
                                 "consistency": 0.426,
-                                "novelty": 0.437,
+                                "Redundancy": 0.437,
                                 "acceptance": 0.652,
                                 "total": 0.627
                             }
@@ -1427,7 +1669,7 @@
                         <div style="font-size:0.95em;color:#888;">
                             Consistency: ${(round.second_exchange.English_Speaking_utility.consistency * 100).toFixed(1)}%,
                             Acceptance: ${(round.second_exchange.English_Speaking_utility.acceptance * 100).toFixed(1)}%,
-                            Novelty: ${(round.second_exchange.English_Speaking_utility.novelty * 100).toFixed(1)}%,
+                            Redundancy: ${(round.second_exchange.English_Speaking_utility.Redundancy * 100).toFixed(1)}%,
                             <strong>Total: ${(round.second_exchange.English_Speaking_utility.total * 100).toFixed(1)}%</strong>
                         </div>
                     </div>
@@ -1439,7 +1681,7 @@
                         <div style="font-size:0.95em;color:#888;">
                             Consistency: ${(round.second_exchange.African_Islamic_utility.consistency * 100).toFixed(1)}%,
                             Acceptance: ${(round.second_exchange.African_Islamic_utility.acceptance * 100).toFixed(1)}%,
-                            Novelty: ${(round.second_exchange.African_Islamic_utility.novelty * 100).toFixed(1)}%,
+                            Redundancy: ${(round.second_exchange.African_Islamic_utility.Redundancy * 100).toFixed(1)}%,
                             <strong>Total: ${(round.second_exchange.African_Islamic_utility.total * 100).toFixed(1)}%</strong>
                         </div>
                     </div>
